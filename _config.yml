@@ -1,0 +1,130 @@
+title: Your awesome title
+author: GitHub User
+email: your-email@domain.com
+description: > # this means to ignore newlines until "twitter_username:"
+  Write an awesome description for your new site here. You can edit this
+  line in _config.yml. It will appear in your document head meta (for
+  Google search results) and in your feed.xml site description.
+
+# social links
+twitter_username: jekyllrb
+github_username:  jekyll
+rss: rss
+# dribbble_username: jekyll
+# facebook_username: jekyll
+# flickr_username: jekyll
+# instagram_username: jekyll
+# linkedin_username: jekyll
+# pinterest_username: jekyll
+# youtube_username: jekyll
+# googleplus_username: +jekyll
+
+# Mastodon instances
+# mastodon:
+# - username: jekyll
+#   instance: example.com
+# - username: jekyll2
+#   instance: example.com
+
+
+show_excerpts: false # set to true to show excerpts on the homepage
+
+# Jekyll-theme-bootstrap date format
+# refer to http://shopify.github.io/liquid/filters/date/ if you want to customize this
+jekyll-theme-bootstrap:
+  date_format: "%b %-d, %Y"
+
+# If you want to link only specific pages in your header, uncomment
+# this and add the path to the pages in order as they should show up
+#header_pages:
+# - about.html
+
+# Build settings
+theme: jekyll-theme-bootstrap
+
+plugins:
+ - jekyll-feed
+ - jekyll-seo-tag
+ - jekyll-github-metadata
+
+
+
+# ------------------------------------------------------------------------------
+# Plugins
+# ------------------------------------------------------------------------------
+
+# https://github.com/jekyll/minima
+lang: en
+google_analytics: "UA-"
+disqus:
+  shortname: jekyll-theme-bootstrap
+
+# https://github.com/jekyll/github-metadata
+repository: chrisbo246/jekyll-theme-bootstrap
+github:
+  url: https://chrisbo246.github.io/jekyll-theme-bootstrap/
+
+# https://github.com/jekyll/jekyll-seo-tag
+date: 2017-01-01 00:00:00 +0100
+webmaster_verifications:
+  google:
+  bing:
+  alexa:
+  yandex:
+author: chrisbo246
+#  default: chrisbo2461
+#  twitter: chrisbo2462
+logo: assets/images/brand/android-chrome-512x512.png
+twitter:
+  username:
+facebook:
+  app_id:
+  publisher:
+  admins:
+social:
+  name:
+  links:
+    - https://github.com/chrisbo246/jekyll-theme-bootstrap
+    #- https://twitter.com/jekyll-theme-bootstrap
+    #- https://www.facebook.com/memo.riser
+    #- https://www.linkedin.com/in/jekyll-theme-bootstrap
+    #- https://plus.google.com/+jekyll-theme-bootstrap
+    #- https://keybase.io/jekyll-theme-bootstrap
+
+# https://github.com/penibelst/jekyll-compress-html
+compress_html:
+  clippings: all
+  comments: ["<!-- ", " -->"]
+  startings: all
+  endings: all
+
+
+
+# ------------------------------------------------------------------------------
+# Jekyll-theme-bootstrap
+# ------------------------------------------------------------------------------
+
+array: []
+
+brand:
+  theme_color:
+  background_color:
+
+headers:
+  api-user-agent: jekyll-theme-bootstrap/1.0
+  origin: https://chrisbo246.github.io/jekyll-theme-bootstrap/
+
+navbar:
+  fixed: true
+  title: true
+  icon: true
+
+yandex_translate:
+  key:
+  auto_mode: true
+  widget_theme: 'light'
+
+adsense:
+  client: 'ca-pub-'
+  slot:
+  format: 'auto'

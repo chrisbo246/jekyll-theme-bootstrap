@@ -1,0 +1,36 @@
+---
+layout: compress
+---
+
+{% assign lang = page.lang | default: site.lang | default: "en" %}
+{% assign t = site.data.locales[lang] %}
+
+<!DOCTYPE html>
+<html lang="{{ lang }}">
+{%- include head.html -%}
+<body>
+
+  {% include adsense.html %}
+
+  <div class="fixed-ad-beside">
+
+    {%- include header.html -%}
+
+    <main id="top" class="page-content animated fadeInRight py-3" aria-label="Content">
+      {{ content }}
+    </main>
+
+    {% comment %}{%- include comments.html -%}{% endcomment %}
+
+    {%- include footer.html -%}
+
+  </div>
+
+  {% if criticalcss.size > 0 %}
+  {% include styles.html %}
+  {% endif %}
+
+  {% include scripts.html %}
+
+</body>
+</html>

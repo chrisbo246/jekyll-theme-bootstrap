@@ -1,0 +1,30 @@
+<header class="container-fluid" role="banner">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary {%- if site.navbar.fixed != false -%}fixed-top{%- endif -%} d-flex flex-row justify-content-between animated fadeInDown">
+    {%- assign default_paths = site.pages | map: "path" -%}
+    {%- assign page_paths = site.header_pages | default: default_paths -%}
+    <a class="navbar-brand" rel="author" href="{{ " / " | relative_url }}">
+      {%- if site.navbar.icon != false -%}
+      <img src="{{ '/assets/images/brand/favicon-32x32.png' | relative_url }}" width="32" height="32" class="d-inline-block align-top" alt="">
+      {%- endif -%}
+      {%- if site.navbar.title != false -%}
+      {%- assign string = site.title | strip | escape -%}
+      {%- assign n = string.size | minus: 2 -%}
+      {%- for i in (0..n) -%}
+      <span class="d-inline-block">{{ site.title | slice: i }}</span>
+      {%- endfor -%}
+      {%- endif -%}
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbar">
+      {%- if page_paths -%}
+      <ul class="navbar-nav mr-auto">
+        {%- for path in page_paths -%} {%- assign my_page = site.pages | where: "path", path | first -%} {%- if my_page.title -%}
+        <a class="page-link" href="{{ my_page.url | relative_url }}">{{ my_page.title | escape }}</a> {%- endif -%} {%- endfor -%}
+      </ul>
+      {%- endif -%}
+    </div>
+    </div>
+  </nav>
+</header>
