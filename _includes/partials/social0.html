@@ -1,0 +1,140 @@
+
+{%- if include.author -%}
+{%- if include.author == 'site' -%}
+{%- assign config = site -%}
+{%- else -%}
+{%- assign config = site.data.authors[include.author] -%}
+{%- endif -%}
+{%- else -%}
+{%- assign config = site.data.authors[page.author] -%}
+{%- endif -%}
+
+{%- assign li_class = include.li_class | default: 'nav-item' -%}
+{%- assign link_class = include.li_class | default: 'nav-link' -%}
+{%- assign icon_class = include.icon_class | default: 'fas fa-fw fa-lg' -%}
+{%- assign text_class = include.text_class | default: '' -%}
+
+{%- if include.icon_only -%}
+{%- assign text_class = text_class | append: ' d-none' -%}
+{%- endif -%}
+
+<ul class="{{ include.class | default: 'nav' }}">
+
+{%- if config.dribbble -%}
+<li class="{{ include.li_class }}" {{ li_attributes }}>
+<a href="https://dribbble.com/{{ config.dribbble | cgi_escape | escape }}">
+<i class="fa-dribble {{ icon_class }}"></i>
+<span class="{{ text_class }}">{{ config.dribbble | escape }}</span>
+</a>
+</li>
+{%- endif -%}
+
+{%- if config.facebook -%}
+<li class="{{ include.li_class }}" {{ li_attributes }}>
+<a href="https://www.facebook.com/{{ config.facebook | cgi_escape | escape }}">
+<i class="fa-facebook {{ icon_class }}"></i>
+<span class="{{ text_class }}">{{ config.facebook | escape }}</span>
+</a>
+</li>
+{%- endif -%}
+
+{%- if config.flickr -%}
+<li class="{{ include.li_class }}" {{ li_attributes }}>
+<a href="https://www.flickr.com/photos/{{ config.flickr | cgi_escape | escape }}">
+<i class="fa-flickr {{ icon_class }}"></i>
+<span class="{{ text_class }}">{{ config.flickr| escape }}</span>
+</a>
+</li>
+{%- endif -%}
+
+{%- if config.github -%}
+<li class="{{ include.li_class }}" {{ li_attributes }}>
+<a href="https://github.com/{{ config.github | cgi_escape | escape }}">
+<i class="fa-github {{ icon_class }}"></i>
+<span class="{{ text_class }}">{{ config.github | escape }}</span>
+</a>
+</li>
+{%- endif -%}
+
+{%- if config.instagram -%}
+<li class="{{ include.li_class }}" {{ li_attributes }}>
+<a href="https://www.instagram.com/{{ config.instagram | cgi_escape | escape }}">
+<i class="fa-instagram {{ icon_class }}"></i>
+<span class="{{ text_class }}">{{ config.instagram | escape }}</span>
+</a>
+</li>
+{%- endif -%}
+
+{%- if config.linkedin -%}
+<li class="{{ include.li_class }}" {{ li_attributes }}>
+<a href="https://www.linkedin.com/in/{{ config.linkedin | cgi_escape | escape }}">
+<i class="fa-linkedin {{ icon_class }}"></i>
+<span class="{{ text_class }}">{{ config.linkedin | escape }}</span>
+</a>
+</li>
+{%- endif -%}
+
+{%- if config.pinterest -%}
+<li class="{{ include.li_class }}" {{ li_attributes }}>
+<a href="https://www.pinterest.com/{{ config.pinterest | cgi_escape | escape }}">
+<i class="fa- {{ icon_class }}"></i>
+<span class="{{ text_class }}">{{ config.pinterest | escape }}</span>
+</a>
+</li>
+{%- endif -%}
+
+{%- for mst in config.mastodon -%}{%- if mst.username and mst.instance -%}
+<li class="{{ include.li_class }}" {{ li_attributes }}>
+<a href="https://{{ mst.instance | cgi_escape | escape}}/@{{mst.username}}">
+<i class="fa-mastodon {{ icon_class }}"></i>
+<span class="{{ text_class }}">{{ mst.username |escape }}</span>
+</a>
+</li>
+{%- endif -%}
+{%- endfor -%}
+{%- if config.twitter -%}
+<li class="{{ include.li_class }}" {{ li_attributes }}>
+<a href="https://twitter.com/{{ config.twitter | cgi_escape | escape }}">
+<i class="fa-twitter {{ icon_class }}"></i>
+<span class="{{ text_class }}">{{ config.twitter | escape }}</span>
+</a>
+</li>
+{%- endif -%}
+
+{%- if config.youtube -%}
+<li class="{{ include.li_class }}" {{ li_attributes }}>
+<a href="https://www.youtube.com/{{ config.youtube | cgi_escape | escape }}">
+<i class="fa-youtube {{ icon_class }}"></i>
+<span class="{{ text_class }}">{{ config.youtube | escape }}</span>
+</a>
+</li>
+{%- endif -%}
+
+{%- if config.google_plus -%}
+<li class="{{ include.li_class }}" {{ li_attributes }}>
+<a href="https://plus.google.com/{{ config.google_plus | escape }}">
+<i class="fa-google-plus {{ icon_class }}"></i>
+<span class="{{ text_class }}">{{ config.google_plus | escape }}</span>
+</a>
+</li>
+{%- endif -%}
+
+{%- if config.gravatar -%}
+<li class="{{ include.li_class }}" {{ li_attributes }}>
+<a href="https://www.gravatar.com/{{ config.gravatar | escape }}">
+<i class="fa-wordpress {{ icon_class }}"></i>
+<span class="{{ text_class }}">{{ config.gravatar | escape }}</span>
+</a>
+</li>
+{%- endif -%}
+
+{%- if config.rss -%}
+<li class="{{ include.li_class }}" {{ li_attributes }}>
+<a href="{{ 'feed.xml' | relative_url }}">
+<i class="fa-rss {{ icon_class }}"></i>
+<span>{{ config.rss | escape }}</span>
+</a>
+</li>
+{%- endif -%}
+
+</ul>

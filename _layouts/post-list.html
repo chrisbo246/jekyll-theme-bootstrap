@@ -2,80 +2,48 @@
 layout: default
 ---
 
-{% assign array = '' | split: ' ' %}
-{% include related-posts.html categories=page.tags tags=array %}
+{%- assign lang = page.lang | default: site.lang | default: "en-US" | replace: '_', '-' -%}
+{%- assign t = site.data.locales[lang] | default: site.data.locales['en-US'] -%}
 
-<div class="container-fluid">
-  <div class="row clearfix">
-    <div class="collapse col col-sm-4 col-md-4 col-lg-3 col-xl-2 order-2" id="post_options">
-      <div class="sidebar sticky-top">
+{%- assign array = '' | split: ' ' -%}
+{%- include helpers/related-posts.html -%}
 
-        {% if posts.size > 0 %}
-        {% include filter-togglers.html posts=posts direction="vertical" %}
-        {% endif %}
+<article class="post">
 
-      </div>
-    </div>
-    <div class="col order-1 p-0">
-      <article class="post">
+  {%- include modules/article/header.html -%}
 
-        {% if page.title %}
-        <header class="post-header" hidden>
-          <h1 class="post-title display-4 mb-4">{{ page.title | escape | replace: ':', ':<br>' }}</h1>
-          {% if page.subtitle %}
-          <h6 class="mb-2 text-muted">{{ post.subtitle | escape }}</h6>
-          {% endif %}
-        </header>
-        {% endif %}
+  {{ content }}
 
-        {{ content }}
+  {%- if posts.size > 0 -%}
+    {%- comment -%}{%- assign posts = posts | sort: 'title' | reverse | sort: 'weight' | reverse -%}{%- endcomment -%}
+
+    {%- if page.features.lunr != false -%}
+    {%- assign keys = 'collection title author description excerpt content' | split: ' ' -%}
+    {%- if page.filters.keys.first -%}
+    {%- assign keys = keys | concat: page.filters.keys -%}
+    {%- endif -%}
+    {%- capture json -%}{%- include helpers/lunr-store.html docs=posts ref_key='id' keys=keys -%}{%- endcapture -%}
+    {%- if json and json.size > 0 -%}
+    <script>window.lunrStore = {{ json }};</script>
+    {%- endif -%}
+    <div id="search-results" class="post-list d-flex flex-row flex-wrap"></div>
+    {%- endif -%}
+
+    {%- include {{ page.post_preview.module | default: 'modules/post-list/post-list-group.html' }} posts=posts id='search-items' ref_key='id' -%}
+
+    {%- comment -%}{%- include modules/post-list/search-results.html posts=posts ref_key="url" -%}{%- endcomment -%}
+
+    <input type="radio" id="flipcard_position_none" name="flipcard_position" value="none" class="d-none" checked />
+
+  {%- endif -%}
+
+  {%- include modules/article/footer.html -%}
+
+</article>
 
 
-
-        {% if posts.size > 0 %}
-        {% assign posts = posts | sort: 'title' | reverse | sort: 'weight' | reverse %}
-
-          {% if site.lunr %}
-          <script>{% include scripts/lunr-store.js posts=posts %}</script>
-          <div id="search-message" class="alert alert-info" role="alert" hidden>{{ t.no_result_info }}</div>
-          <div id="search-results" class="post-list d-flex flex-row flex-wrap">
-          {% else %}
-          <div class="post-list d-flex flex-row flex-wrap">
-            {% for post in posts %}
-            {% if post.url and post.title and post.content.size > 100 %}
-            <div class="{% include filter-tags.html post=post %}">
-              <input type="radio" id="flipcard_position_{{ post.url | slugify: 'default' }}" name="flipcard_position" value="{{ post.url }}" class="flipcard-position d-none" data-storage="false" />
-              <div class="card card-flip m-1">
-                {% if post.weight > 0 %}
-                {% assign class = 'card-position-absolute bg-primary text-white' %}
-                {% else %}
-                {% assign class = 'card-position-absolute bg-white' %}
-                {% endif %}
-                {% include card.html face="front" post=post class=class img-class="card-img-faded card-img-grayscale" title-class="h2 font-weight-bold" %}
-                {% include card.html face="back" post=post class="bg-white text-dark" %}
-              </div>
-            </div>
-            {% endif %}
-            {% endfor %}
-          </div>
-          {% endif %}
-
-        </div>
-        <input type="radio" id="flipcard_toggler_none" name="flipcard_toggler" value="none" class="d-none" checked />
-
-        {% else %}
-        <div class="alert alert-info" role="alert">
-          <strong>{{ t.oups }}</strong> {{ t.no_result_info}}
-        </div>
-        {% endif %}
-
-      </article>
-    </div>
-  </div>
-</div>
-
-{% comment %}
+{%- comment -%}
 <script type="application/ld+json">
-{% include structured-data/item-list.html collection=page.collection_type %}
+{%- include structured-data/item-list.html collection=page.collection -%}
 </script>
-{% endcomment %}
+{%- endcomment -%}

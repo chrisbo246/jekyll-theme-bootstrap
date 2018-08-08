@@ -1,0 +1,12 @@
+
+{%- if page.features.lunr != false -%}
+<script>window.lunrStore = {%- include helpers/lunr-store.html docs=posts ref_key="url" -%};</script>
+lunr-list
+<div id="search-results" class="post-list d-flex flex-row flex-wrap"></div>
+{%- assign attributs='id="search-items" hidden=""' -%}
+{%- endif -%}
+
+{%- assign ref_key = include.ref_key | default: nil -%}
+
+default-list
+{%- include {{ include.module | default: page.post_preview.module | default: 'modules/post-list/post-list-group.html' }} posts=posts ref_key=ref_key attributs=attributs -%}

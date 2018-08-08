@@ -1,0 +1,11 @@
+{%- if page.settings.modules.first -%}
+
+{%- assign config = page.settings_toggler -%}
+{%- assign target = '#settings' -%}
+{%- assign text = config.text.text | default: t.toggle_settings -%}
+{%- assign class = config.class | default: 'btn btn-secondary' -%}
+{%- assign icon_class = config.icon.class | default: 'fas fa-cog fa-lg fa-fw' -%}
+
+{%- include bootstrap-components/toggler.html target=target text=text class=class icon_class=icon_class text_class=config.text.class toggle='modal' -%}
+
+{%- endif -%}

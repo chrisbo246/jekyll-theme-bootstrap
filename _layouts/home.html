@@ -2,33 +2,19 @@
 layout: default
 ---
 
-<div class="home">
-  {%- if page.title -%}
-    <h1 class="page-heading">{{ page.title }}</h1>
-  {%- endif -%}
+{%- assign lang = page.lang | default: site.lang | default: "en-US" | replace: '_', '-' -%}
+{%- assign t = site.data.locales[lang] | default: site.data.locales['en-US'] -%}
 
-  {{ content }}
+{{ content }}
 
-  {%- if site.posts.size > 0 -%}
-    <h2 class="post-list-heading">{{ page.list_title | default: "Posts" }}</h2>
-    <ul class="post-list">
-      {%- for post in site.posts -%}
-      <li>
-        {%- assign date_format = site.jekyll-theme-bootstrap.date_format | default: "%b %-d, %Y" -%}
-        <span class="post-meta">{{ post.date | date: date_format }}</span>
-        <h3>
-          <a class="post-link" href="{{ post.url | relative_url }}">
-            {{ post.title | escape }}
-          </a>
-        </h3>
-        {%- if site.show_excerpts -%}
-          {{ post.excerpt }}
-        {%- endif -%}
-      </li>
-      {%- endfor -%}
-    </ul>
+<section>
+{%- include bootstrap-components/jumbotron.html -%}
+</section>
 
-    <p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | relative_url }}">via RSS</a></p>
-  {%- endif -%}
-
-</div>
+{%- if site.posts.size > 0 -%}
+<section>
+  <h2 class="post-list-heading">{{ page.list_title | default: t.last_posts }}</h2>
+  {%- assign posts = site.posts | sort: 'date', 'last' | limit: 3 -%}
+  {%- include {{ page.post_preview.module | default: 'modules/post-list/post-list-group.html' }} posts=posts -%}
+</section>
+{%- endif -%}

@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
 Gem::Specification.new do |spec|
-  spec.name          = "jekyll-theme-bootstrap"
+  spec.name          = "jekyll-theme-overkill"
   spec.version       = "0.1.0"
   spec.authors       = ["Joel Glovier"]
   spec.email         = ["jglovier@github.com"]
 
-  spec.summary       = "A beautiful, jekyll-theme-bootstrapl theme for Jekyll."
-  spec.homepage      = "https://github.com/jekyll/jekyll-theme-bootstrap"
+  spec.summary       = "A beautiful, jekyll-theme-overkilll theme for Jekyll."
+  spec.homepage      = "https://github.com/jekyll/jekyll-theme-overkill"
   spec.license       = "MIT"
 
   spec.metadata["plugin_type"] = "theme"

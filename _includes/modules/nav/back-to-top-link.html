@@ -1,0 +1,11 @@
+{%- if page.features.back_to_top != false -%}
+
+{%- assign config = page.back_to_top_link -%}
+{%- assign target = '#top' -%}
+{%- assign text = config.text.text | default: t.back_to_top -%}
+{%- assign class = config.class | default: 'btn btn-secondary' | append: ' reveal' -%}
+{%- assign icon_class = config.icon.class | default: 'fas chevron-up fa-lg fa-fw' -%}
+
+{%- include bootstrap-components/link.html target=target text=text class=class icon_class=icon_class text_class=config.text.class -%}
+
+{%- endif -%}

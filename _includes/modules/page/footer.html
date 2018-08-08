@@ -1,0 +1,17 @@
+<footer>
+<data class="u-url" href="{{ "/" | relative_url }}"></data>
+</footer>
+
+{%- assign config = page.bottom_navbar -%}
+
+{%- if config.modules and config.modules.size > 0 -%}
+<nav class="{{ config.class | default: 'navbar navbar-light bg-light' }} {{ config.position }}">
+
+  {%- if config.modules and config.modules.size > 0 -%}
+  {%- for path in config.modules -%}
+  {%- include {{ path }} -%}
+  {%- endfor -%}
+  {%- endif -%}
+
+</nav>
+{%- endif -%}

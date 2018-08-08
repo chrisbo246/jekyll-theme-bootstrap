@@ -1,0 +1,51 @@
+
+{%- assign pages_url = site.pages | map: 'url' -%}
+{%- assign crumbs = page.url | split: '/' -%}
+
+<nav class="{{ include.class | default: 'breadcrumb' }}" aria-label="{{ t.breadcrumb }}">
+
+  {%- if include.home != false -%}
+  {%- if crumbs.size > 0 -%}
+  <a class="breadcrumb-item {{ include.item_class }}" href="{{ '/' | relative_url }}">{{ include.home | default: t.home }}</a>
+  {%- else -%}
+  <span class="breadcrumb-item active {{ include.item_class }}" aria-current="page">{{ include.home | default: t.home }}</span>
+  {%- endif -%}
+  {%- endif -%}
+
+  {%- for crumb in crumbs offset:1 -%}
+  {%- unless forloop.last -%}
+
+  {%- assign url_parts = '' | split: ' ' -%}
+  {%- for crumb in crumbs offset:1 limit:forloop.index -%}
+  {%- assign url_parts = url_parts | push: crumb -%}
+  {%- endfor -%}
+  {%- assign url = url_parts | join: '/' | prepend: '/' | append: '.html' -%}
+
+  {%- if pages_url contains url -%}
+  <a class="breadcrumb-item {{ include.item_class }}" href="{{ url | relative_url }}">{{ crumb | capitalize }}</a>
+  {%- endif -%}
+
+  {%- else -%}
+    {%- if include.related != false -%}
+      {%- unless posts.first -%}
+      {%- include helpers/related-posts.html -%}
+      {%- endunless -%}      
+      {%- if posts.size > 0 -%}
+      <div class="btn-group breadcrumb-item active" aria-current="page">
+        <a class="dropdown-toggle {{ include.item_class }}" id="breadcrumb-item-related_posts-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-label="{{ t.related_posts }}">
+          {{ page.title | strip | escape }}
+        </a>
+        <div class="dropdown-menu" aria-labelledby="breadcrumb-item-related_posts-dropdown">
+          {%- include bootstrap-components/dropdown-items.html posts=posts -%}
+        </div>
+      </div>
+      {%- else -%}
+      <span class="breadcrumb-item active {{ include.item_class }}" aria-current="page">{{ page.title | strip | escape }}</span>
+      {%- endif -%}
+    {%- else -%}
+    <span class="breadcrumb-item active {{ include.item_class }}" aria-current="page">{{ page.title | strip | escape }}</span>
+    {%- endif -%}
+  {%- endunless -%}
+  {%- endfor -%}
+
+</nav>

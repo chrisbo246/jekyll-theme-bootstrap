@@ -1,0 +1,88 @@
+---
+layout: default
+---
+
+{%- assign collection = page.collection | default: 'posts' -%}
+{%- assign posts = site[collection] | sort: 'title' -%}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 pull-right">
+            <div id="affix_sidebar" class="sticky-top" data-spy="affix" data-offset-top="60">
+              {%- if posts.size > 0 -%}
+              {%- include modules/nav/initials-nav.html posts=posts -%}
+                <div class="panel panel-default animated slideInUp">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">{{ t.filters }}</h3>
+                    </div>
+                    <div class="panel-body clearfix">
+                      {%- include modules/post-list/collection-filters.html key=page.filters.keys -%}
+                    </div>
+                </div>
+                {%- endif -%}
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+            <header class="page-header">
+                <h1>{{ page.title }}</h1>
+            </header>
+            {{ page.content | strip_newlines }}
+            <ul id="search-results" class="list-unstyled"></ul>
+            {%- if posts.size > 0 -%}
+            {%- include collection-list.html posts=posts type="posts" -%}
+            {%- endif -%}
+        </div>
+    </div>
+</div>
+
+
+{%- comment -%}
+<script>
+window.store = {
+{%- if page.collection and site[page.collection].size > 0 -%}
+{%- for post in site[page.collection] -%}
+"{{ post.url | slugify }}": {
+        "title": "{{ post.title | xml_escape }}",
+        "author": "{{ post.author | xml_escape }}",
+        "category": "{{ post.category | xml_escape }}",
+        "content": {{ post.content | strip_html | strip_newlines | jsonify }},
+        "url": "{{ post.url | xml_escape }}",
+        "description": "{{ post.description | xml_escape }}",
+        "excerpt": "{{ post.excerpt | strip_html | strip_newlines }}",
+        "aliases": "{{ post.aliases | join: ',' }}",
+        "types": "{{ post.types | join: ' ' }}",
+        "brands": "{{ post.brands | join: ' ' }}",
+        "purposes": "{{ post.purposes | join: ' ' }}"
+    }{%- unless forloop.last -%},{%- endunless -%}
+  {%- endfor -%}
+{%- endif -%}
+};
+</script>
+<script src="{{ '/node_modules/lunr.js/lunr.min.js' | relative_url }}"></script>
+<script src="{{ '/scripts/search.js' | relative_url }}"></script>
+{%- endcomment -%}
+
+{%- comment -%}
+<!--
+
+<form class="radio-glyphicon checkbox-success" data-persist="garlic" method="post">{%- for post in posts -%}
+<div class="media filter-item" {% for collection in site.collections %}data-{{ collection.label }}="{% if page.collection == collection.label %}{{ post.slug }} {% endif %}{% if post[collection.label] %}{{ post[collection.label] | join: ' ' }}{% endif %}" {% endfor %} >
+<div class="pull-left">{%- include selection-checkbox.html post=post -%}
+</div>
+<div class="media-left">
+<a href="{{ post.url | prepend: site.github.url }}" class="img-wrapper img-wrapper-xs">{%- if post.image -%}{%- include image.html src=post.image width=50 height=50 alt=post.title class="media-object" -%}{%- endif -%}
+</a>
+</div>
+<div class="media-body">{%- include initial-anchor.html title=post.title -%}
+<h4 class="media-heading">
+<a href="{{ post.url | prepend: site.github.url }}">{{ post.title }}</a>
+</h4>{%- if post.category -%}<span class="label label-default">{{ post.category }}</span>{%- endif -%}{%- if post.categories -%}<span class="label label-primary">{% for category in post.categories %}{{ category }}{% endfor %}</span>{%- endif -%}{%- if post.description -%}<p>{{ post.description }}</p>{%- endif -%}{%- if post.tags -%}<small>{% for tag in post.tags %}<span class="label label-default">{{ tag }}</span>{% endfor %}</small>{%- endif -%}{%- include post-pros-cons.html post=post -%}{%- assign posts2 = site[page.collection] | sort: 'title' -%}
+<ul class="list-inline">{%- for post2 in posts2 -%}{%- if post2[page.collection] contains post.slug -%}
+<li><a href="{{ post2.url }}">{{ post2.title }}</a></li>{%- endif -%}{%- endfor -%}
+</ul>
+
+
+</div>
+</div>{%- endfor -%}
+</form>
+-->{%- endcomment -%}

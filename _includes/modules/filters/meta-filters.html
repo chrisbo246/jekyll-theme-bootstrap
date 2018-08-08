@@ -1,0 +1,30 @@
+{%- assign config = page.filters -%}
+{%- assign posts = include.posts | default: posts -%}
+{%- assign keys = include.keys | default: config.keys -%}
+
+{%- unless posts.first -%}
+{%- include helpers/related-posts.html -%}
+{%- endunless -%}
+
+{%- if posts.first and keys.first -%}
+{%- for key in keys -%}
+{%- comment -%}{%- assign values = site.collections | where: 'label', key | first -%}{%- endcomment -%}
+{%- assign values = posts | map: key | uniq | compact | sort_natural -%}
+{%- if values.size > 0 -%}
+{%- comment -%}{%- assign label = site.collections[key].title | default: t[key] | default: key -%}{%- endcomment -%}
+{%- assign label = t[key] | default: key -%}
+<div class="form-group {{ include.item_class }}">
+  <label for="{{ key }}_filter">{{ label }}
+    <select id="{{ key }}_filter" class="-form-control w-100 select2 filter" name="{{ key }}[]" data-filter="{{ key }}" multiple="multiple" placeholder="{{ label }}" aria-describedby="{{ key }}_filter_description" data-placeholder="{{ label }}" data-tags="true" data-allow-clear="true">
+      {%- for value in values -%}
+        <option value="{{ value }}">{{ t[value] | default: value }}</option>
+      {%- endfor -%}
+    </select>
+  </label>
+  {%- if site.collections[key].description -%}
+  <small id="{{ key }}_filter_description" class="form-text text-muted">{{ site.collections[key].description }}</small>
+  {%- endif -%}
+</div>
+{%- endif -%}
+{%- endfor -%}
+{%- endif -%}

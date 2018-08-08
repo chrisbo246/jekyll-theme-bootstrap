@@ -12,4 +12,4 @@ else
   exit 1
 fi
 
-gem build jekyll-theme-bootstrap.gemspec
+gem build jekyll-theme-overkill.gemspec

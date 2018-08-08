@@ -1,0 +1,14 @@
+{%- if page.features.disqus != false -%}
+
+{%- assign config = page.comments_toggler -%}
+{%- assign target = '#comments' -%}
+{%- assign text = config.text.text | default: t.toggle_comments -%}
+{%- assign class = config.class | default: 'btn btn-secondary' -%}
+{%- assign icon_class = config.icon.class | default: 'fas fa-comments fa-lg fa-fw' -%}
+{%- assign badge_text = '' -%}
+{%- assign badge_class = config.badge.class | default: 'disqus-comment-count badge badge-primary badge-pill' -%}
+{%- capture badge_attributes -%}data-disqus-identifier="{{ page.url }}"{%- endcapture -%}
+
+{%- include bootstrap-components/toggler.html target=target text=text class=class icon_class=icon_class text_class=config.text.class toggle='collapse' badge_text=badge_text badge_class=badge_class badge_attributes=badge_attributes -%}
+
+{%- endif -%}

@@ -1,0 +1,23 @@
+{%- assign config = page.navbar_brand -%}
+{%- assign name = config.name.text | default: site.title | strip | escape -%}
+
+<a class="navbar-brand {{ include.class }}" rel="author" href="{{ '/' | relative_url }}">
+
+  {%- if config.image.src -%}
+  <img src="{{ config.image.src | relative_url }}" {% if config.image.width %}width="{{ config.image.width }}"{% endif %} {% if config.image.height %}height="{{ config.image.height }}"{% endif %} class="{{ config.image.class | default: 'd-inline-block align-top' }}" alt="{{ t.logo }} {{ name }}" title="{{ t.home }}">
+  {%- endif -%}
+
+  {%- if name.size > 0 -%}
+  {%- assign n = name.size | minus: 1 -%}
+  <span {% if config.name.class %}class="{{ config.name.class }}"{% endif %}>
+  {%- for i in (0..n) -%}
+  <span class="d-inline-block">{{ name | slice: i }}</span>
+  {%- endfor -%}
+  </span>
+  {%- endif -%}
+
+  {%- if jekyll.environment != 'production' -%}
+  <sup><small class="badge badge-warning ml-1">{{ jekyll.environment }}</small></sup>
+  {%- endif -%}
+
+</a>

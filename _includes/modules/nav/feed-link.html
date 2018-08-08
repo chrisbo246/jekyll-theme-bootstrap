@@ -1,0 +1,9 @@
+
+{%- assign config = page.feed_link -%}
+{%- assign target = '/feed.xml' | relative_url -%}
+{%- assign text = config.text.text | default: t.feed -%}
+{%- assign class = config.class | default: 'btn btn-secondary' -%}
+{%- assign icon_class = config.icon.class | default: 'fas fa-rss fa-lg fa-fw' -%}
+
+{%- if config.visibility != false -%}{%- endif -%}
+{%- include bootstrap-components/link.html target=target text=text class=class icon_class=icon_class text_class=config.text.class -%}

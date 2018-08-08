@@ -1,0 +1,31 @@
+
+@mixin scrollbars($size, $foreground-color, $background-color: mix($foreground-color, $white, 50%)) {
+
+  ::-webkit-scrollbar {
+    height: $size;
+    width: $size;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: $foreground-color;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: $background-color;
+  }
+
+  body {
+    //-webkit-scrollbar-3dlight-color: $light;
+    //-webkit-scrollbar-arrow-color: $white;
+    //-webkit-scrollbar-darkshadow-color: $dark;
+    -webkit-scrollbar-face-color: $foreground-color;
+    //-webkit-scrollbar-highlight-color: $light;
+    //-webkit-scrollbar-shadow-color: $dark;
+    -webkit-scrollbar-track-color: $background-color;
+  }
+
+  html {
+    overflow-y: scroll;
+  }
+
+}

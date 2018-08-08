@@ -1,0 +1,20 @@
+<header>
+</header>
+
+{%- assign config = page.top_navbar -%}
+
+{%- if config.modules and config.modules.size > 0 -%}
+<nav class="{{ config.class | default: 'navbar navbar-light bg-light' }} {{ config.position }}">
+
+  {%- if page.sidebar.modules and page.sidebar.modules.size > 0 -%}
+  <button class="navbar-toggler order-last ml-auto" type="button" data-toggle="collapse" data-target="#sidebar" aria-controls="navbar" aria-expanded="false" aria-label="{{ t.toggle_navigation }}">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  {%- endif -%}
+
+  {%- for path in config.modules -%}
+  {%- include {{ path }} -%}
+  {%- endfor -%}
+
+</nav>
+{%- endif -%}

@@ -1,0 +1,24 @@
+chrisbo246:
+  type: "Person"
+  name: "chrisbo246"
+  bio: >
+    Short author biography.
+  picture: /assets/images/authors/chrisbo246.png
+  image:
+    path: /assets/images/authors/chrisbo246.png
+    width: 897
+    height: 897
+  url:
+  github: chrisbo246
+  twitter: chrisbo246
+  facebook: chrisbo246
+  google_plus: chrisbo246
+  dribbble: chrisbo246
+  flickr: chrisbo246
+  instagram: chrisbo246
+  linkedin: chrisbo246
+  pinterest: chrisbo246
+  youtube: chrisbo246
+  mastodon:
+    - username: chrisbo246
+      instance: example.com

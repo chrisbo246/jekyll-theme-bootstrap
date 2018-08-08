@@ -1,0 +1,8 @@
+{%- assign config = page.tip_link -%}
+{%- capture target -%}{{ site.baseurl }}{% link tips.md %}{%- endcapture -%}
+{%- assign target = config.target | default: target -%}
+{%- assign text = config.text.text | default: t.tips -%}
+{%- assign class = config.class | default: 'btn btn-secondary' -%}
+{%- assign icon_class = config.icon.class | default: 'fas fa-question fa-lg fa-fw' -%}
+
+{%- include bootstrap-components/link.html target=target text=text class=class icon_class=icon_class text_class=config.text.class -%}

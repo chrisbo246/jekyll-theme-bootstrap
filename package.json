@@ -1,0 +1,21 @@
+{
+  "name": "jekyll-theme-overkill",
+  "version": "0.1.0",
+  "main": "_site/index.html",
+  "repository": "https://github.com/chrisbo246/jekyll-theme-overkill.git",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.2.0",
+    "bootstrap": "^4.1.2",
+    "bootswatch": "^4.1.2",
+    "cookieconsent": "^3.0.6",
+    "jquery": "^3.3.1",
+    "lazysizes": "^4.0.4",
+    "lunr": "^2.3.0",
+    "lunr-languages": "^1.0.0",
+    "popper.js": "^1.14.3",
+    "select2": "^4.0.6-rc.1",
+    "select2-bootstrap4-theme": "^1.0.0"
+  }
+}

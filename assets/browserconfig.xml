@@ -4,8 +4,8 @@
 <browserconfig>
     <msapplication>
         <tile>
-            <square150x150logo src="/mstile-150x150.png"/>
-            <TileColor>{{ site.brand.theme_color }}</TileColor>
+            <square150x150logo src="{{ '/assets/images/brand/mstile-150x150.png' | relative_url }}"/>
+            <TileColor>{{ site.web_app_manifest.theme_color | default: '#ffffff' }}</TileColor>
         </tile>
     </msapplication>
 </browserconfig>
