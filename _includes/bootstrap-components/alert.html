@@ -12,11 +12,11 @@
   {%- comment -%}{%- if fa -%}<span class="fas {{ fa }} fa-4x float-left d-block h-100 mr-3" aria-hidden="false"></span>{%- endif -%}{%- endcomment -%}
 
   {%- if alert.title -%}
-  <h4 class="alert-heading">{{ alert.title }}</h4>
+  <h4 class="alert-heading" hidden>{{ alert.title }}</h4>
   {%- endif -%}
 
   {%- if alert.excerpt -%}
-  {{ alert.excerpt | markdownify | strip }}
+  {{ alert.description | default: alert.excerpt | markdownify | strip }}
   {%- endif -%}
 
   {%- if alert.content and alert.content != alert.excerpt and alert.url -%}

@@ -1,7 +1,5 @@
 {% raw %}
-var speechSynthesisModule = (function (window, document) {
-  'use strict';
-
+const speechSynthesisModule = (((window, document) => {
   if (typeof window.speechSynthesis === 'undefined') {
     console.warn('Speech synthesis not supported by this browser.');
     return false;
@@ -12,24 +10,24 @@ var speechSynthesisModule = (function (window, document) {
    * Update voice list value
    */
 
-  var loadVoices = function () {
+  const loadVoices = () => {
 
     voices = window.speechSynthesis.getVoices();
 
     if (voices.length === 0) {
       console.warn('No speech synthesis language detected on your device.');
     } else {
-      var langs = voices.map(function (voice) { return voice.lang; }).filter(function (value, index, self) { return self.indexOf(value) === index; });
-      if (pageLang && langs.indexOf(pageLang) === -1) {
+      const langs = voices.map(voice => voice.lang).filter((value, index, self) => self.indexOf(value) === index);
+      if (pageLang && !langs.includes(pageLang)) {
         // if page lang is not available (e.g."en"), use the closest voice lang (e.g. "en-US")
-        for (var i in langs) {
-          if (pageLang === langs[i].replace(/-[a-zA-Z]+$/, '')) {
-            pageLang = langs[i];
+        for (const lang of langs) {
+          if (pageLang === lang.replace(/-[a-zA-Z]+$/, '')) {
+            pageLang = lang;
           }
         }
       }
-      if (pageLang && langs.indexOf(pageLang) === -1) {
-        console.warn('Speech synthesis language "' + pageLang + '" is not installed on your device');
+      if (pageLang && !langs.includes(pageLang)) {
+        console.warn(`Speech synthesis language "${pageLang}" is not installed on your device`);
         console.log('Speech synthesis available languages', langs);
       }
       if (voiceInput) {
@@ -40,7 +38,7 @@ var speechSynthesisModule = (function (window, document) {
       }
     }
 
-  }
+  };
 
 
 
@@ -48,25 +46,26 @@ var speechSynthesisModule = (function (window, document) {
    * Populate the language select input
    */
 
-  var populateVoiceList = function (lang) {
-    var i;
+  const populateVoiceList = lang => {
 
     voiceInput.innerHTML = '';
 
-    for (i = 0; i < voices.length; i++) {
-      if (!lang || lang === voices[i].lang) {
+    let option, selected;
 
-        var option = document.createElement('option');
-        option.textContent = voices[i].name + ' (' + voices[i].lang + ')';
-        if (voices[i].default) {
+    for (const voice of voices) {
+      if (!lang || lang === voice.lang) {
+
+        option = document.createElement('option');
+        option.textContent = `${voice.name} (${voice.lang})`;
+        if (voice.default) {
           option.textContent += ' -- DEFAULT';
         }
-        option.setAttribute('data-lang', voices[i].lang);
-        option.setAttribute('data-name', voices[i].name);
-        option.value = voices[i].name;
+        option.setAttribute('data-lang', voice.lang);
+        option.setAttribute('data-name', voice.name);
+        option.value = voice.name;
         if (!selected) {
           option.setAttribute('selected', 'selected');
-          var selected = true;
+          selected = true;
         }
 
         voiceInput.appendChild(option);
@@ -76,15 +75,15 @@ var speechSynthesisModule = (function (window, document) {
 
 
 
-  var voiceInput = document.querySelector('#speech-synthesis-voice');
-  var pitchInput = document.querySelector('#speech-synthesis-pitch');
-  var rateInput = document.querySelector('#speech-synthesis-rate');
-  var volumeInput = document.querySelector('#speech-synthesis-volume');
-  //var playButtons = document.querySelectorAll('.speech-synthesis');
-  var langInput = document.querySelector('#speech-synthesis-lang');
+  const voiceInput = document.querySelector('#speech-synthesis-voice');
+  const pitchInput = document.querySelector('#speech-synthesis-pitch');
+  const rateInput = document.querySelector('#speech-synthesis-rate');
+  const volumeInput = document.querySelector('#speech-synthesis-volume');
+  //const playButtons = document.querySelectorAll('.speech-synthesis');
+  const langInput = document.querySelector('#speech-synthesis-lang');
+  const pageLang = $('html').attr('lang');
 
-  var voices = [];
-  var pageLang = $('html').attr('lang');
+  let voices = [];
 
   if (window.speechSynthesis.onvoiceschanged !== undefined) {
     window.speechSynthesis.onvoiceschanged = loadVoices;
@@ -99,15 +98,15 @@ var speechSynthesisModule = (function (window, document) {
    * Start speech synthesis
    */
 
-  var speak = function (text, options) {
+  const speak = (text, options) => {
 
-    var utterThis = new SpeechSynthesisUtterance();
+    const utterThis = new SpeechSynthesisUtterance();
 
     if (text) {
       utterThis.text = text;
-    } else {
+    } /*else {
       utterThis.text = this.textContent;
-    }
+    }*/
 
     if (options.lang) {
       utterThis.lang = options.lang;
@@ -115,13 +114,13 @@ var speechSynthesisModule = (function (window, document) {
 
     // Use selected voice (if lang match)
     if (voiceInput && voiceInput.value) {
-      var voice = voices.filter(function(voice) { return voice.name == voiceInput.value; })[0];
+      const voice = voices.filter(voice => voice.name == voiceInput.value)[0];
       if (!options.lang || voice.lang === options.lang) {
         utterThis.voice = voice;
       }
     } else if (options.lang) {
       // Use the first available voice matchin lang
-      utterThis.voice = voices.filter(function(voice) { return voice.lang == options.lang; })[0];
+      utterThis.voice = voices.filter(voice => voice.lang == options.lang)[0];
     }
 
     //utterThis.voiceURI = 'native';
@@ -135,7 +134,7 @@ var speechSynthesisModule = (function (window, document) {
       utterThis.volume = parseFloat(volumeInput.value); // 0 to 1
     }
 
-    utterThis.onend = function (e) {
+    utterThis.onend = e => {
       //console.log('Speech synthesis Finished in ' + event.elapsedTime + ' seconds.');
     };
 
@@ -149,28 +148,27 @@ var speechSynthesisModule = (function (window, document) {
    * Start speech synthesis when user click button
    */
 
-  var addEventListener = function (selector, event) {
+  const addEventListener = (selector, event) => {
 
-    var i;
-    var elements = document.querySelectorAll(selector);
+    const elements = document.querySelectorAll(selector);
 
-    for (i = 0; i < elements.length; i++) {
-      elements[i].addEventListener((event || 'click'), function (e) {
+    for (const el of elements) {
+      el.addEventListener((event || 'click'), (e) => {
         e.preventDefault();
 
-        var text = this.getAttribute('data-speech-synthesis-text');
-        var lang = this.getAttribute('data-speech-synthesis-lang');
-        var targetSelector = this.getAttribute('data-speech-synthesis-target');
+        const text = e.currentTarget.getAttribute('data-speech-synthesis-text');
+        const lang = e.currentTarget.getAttribute('data-speech-synthesis-lang');
+        const targetSelector = e.currentTarget.getAttribute('data-speech-synthesis-target');
 
         if (targetSelector) {
-          var target = document.querySelector(targetSelector);
+          const target = document.querySelector(targetSelector);
           if (target) {
-            var text = target.textContent || target.value;
+            text = target.textContent || target.value;
           }
         }
 
         speak(text, {
-          lang: lang
+          lang
         });
 
       });
@@ -187,7 +185,5 @@ var speechSynthesisModule = (function (window, document) {
     populateVoiceList,
     addEventListener
   }
-
-
-})(window, document);
+}))(window, document);
 {% endraw %}

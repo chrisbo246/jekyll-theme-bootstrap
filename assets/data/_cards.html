@@ -9,7 +9,7 @@
 
 {%- capture preview -%}
 <div class="{% include partials/post-tag-filter-classes.html post=post %}" id="lunr-result-{{ post.url | slugify }}" data-lunr-ref={{ post.url | jsonify }} >
-  <input type="radio" id="flipcard_position_{{ post.url | slugify: 'default' }}" name="flipcard_position" value="{{ post.url }}" class="flipcard-position d-none" data-storage="false" />
+  <input type="radio" id="flipcard_position_{{ post.url | slugify: 'default' }}" name="flipcard_position" value="{{ post.url }}" class="flipcard-position d-none" data-local-storage="false" />
   <div class="card flipcard m-1">
     {%- if post.weight > 0 -%}
     {%- assign class = 'card-position-absolute bg-primary text-white' -%}
@@ -33,7 +33,7 @@
 
 {%- capture preview -%}
 <div class="{%- include partials/post-tag-filter-classes.html post=post -%}" data-lunr-ref={{ post.url | jsonify }} >
-  <input type="radio" id="flipcard_position_{{ post.url | slugify: 'default' }}" name="flipcard_position" value="{{ post.url }}" class="flipcard-position d-none" data-storage="false" />
+  <input type="radio" id="flipcard_position_{{ post.url | slugify: 'default' }}" name="flipcard_position" value="{{ post.url }}" class="flipcard-position d-none" data-local-storage="false" />
   <div class="card flipcard m-1">
     {%- if post.weight > 0 -%}
     {%- assign class = 'bg-primary text-white' -%}

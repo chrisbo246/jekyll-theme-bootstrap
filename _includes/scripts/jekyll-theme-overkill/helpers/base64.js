@@ -1,14 +1,20 @@
 {% raw %}
-var Base64 = {
+const Base64 = {
 
 
   _keyStr: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",
 
 
-  encode: function (input) {
-    var output = "";
-    var chr1, chr2, chr3, enc1, enc2, enc3, enc4;
-    var i = 0;
+  encode(input) {
+    let output = "";
+    let chr1;
+    let chr2;
+    let chr3;
+    let enc1;
+    let enc2;
+    let enc3;
+    let enc4;
+    let i = 0;
 
     input = Base64._utf8_encode(input);
 
@@ -37,11 +43,16 @@ var Base64 = {
   },
 
 
-  decode: function (input) {
-    var output = "";
-    var chr1, chr2, chr3;
-    var enc1, enc2, enc3, enc4;
-    var i = 0;
+  decode(input) {
+    let output = "";
+    let chr1;
+    let chr2;
+    let chr3;
+    let enc1;
+    let enc2;
+    let enc3;
+    let enc4;
+    let i = 0;
 
     input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
 
@@ -70,16 +81,15 @@ var Base64 = {
     output = Base64._utf8_decode(output);
 
     return output;
-
   },
 
-  _utf8_encode: function (string) {
+  _utf8_encode(string) {
     string = string.replace(/\r\n/g, "\n");
-    var utftext = "";
+    let utftext = "";
 
-    for (var n = 0; n < string.length; n++) {
+    for (let n = 0; n < string.length; n++) {
 
-      var c = string.charCodeAt(n);
+      const c = string.charCodeAt(n);
 
       if (c < 128) {
         utftext += String.fromCharCode(c);
@@ -99,10 +109,10 @@ var Base64 = {
     return utftext;
   },
 
-  _utf8_decode: function (utftext) {
-    var string = "";
-    var i = 0;
-    var c = c1 = c2 = 0;
+  _utf8_decode(utftext) {
+    let string = "";
+    let i = 0;
+    let c = c1 = c2 = 0;
 
     while (i < utftext.length) {
 

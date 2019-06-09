@@ -1,23 +1,20 @@
 {% raw %}
-(function ($, window, document) {
-  'use strict';
-
-
+((($, window, document) => {
   /**
   * Display progression on post preview (card)
   */
 
   if (window.localStorage) {
-    $('.progress').each(function () {
-      var $progress = $(this);
-      var $card = $progress.closest('.card').first();
-      var namespace = $progress.attr('data-id');
-      var key = 'progress';
-      var value = JSON.parse(localStorage.getItem(namespace + ':' + key));
-      var complete = (value === 100);
+    $('.progress').each((index, element) => {
+      const $progress = $(element);
+      const $card = $progress.closest('.card').first();
+      const namespace = $progress.attr('data-id');
+      const key = 'progress';
+      const value = JSON.parse(localStorage.getItem(`${namespace}:${key}`));
+      const complete = (value === 100);
       $progress
         .find('.progress-bar')
-        .css('width', (value || 0) + '%')
+        .css('width', `${value || 0}%`)
         //.html((value || 0).toFixed() + '%')
         .attr('aria-valuenow', (value || 0).toFixed());
       if (complete) {
@@ -26,7 +23,5 @@
       }
     });
   }
-
-
-})(window.jQuery, window, document);
+}))(window.jQuery, window, document);
 {% endraw %}

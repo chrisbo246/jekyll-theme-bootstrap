@@ -1,17 +1,19 @@
 ---
 layout: page
 title: About
-permalink: /about/
+#permalink: /about/
+lang: en-US
+translation_ref: about.md
 
 features:
-  disqus: true
+  comments: true
 
 nav_item:
-  group: "primary-nav"
-  position: 10
+  group: "secondary-nav"
+  position: 7
   label: "About"
   icon:
-    class:
+    class: fas fa-info fa-lg fa-fw
 ---
 
 This is the base Jekyll theme. You can find out more info about customizing your Jekyll theme, as well as basic Jekyll usage documentation at [jekyllrb.com](https://jekyllrb.com/)

@@ -2,9 +2,14 @@
 {%- assign config = page.features -%}
 
 {%- assign lang = page.lang | default: site.lang | default: "en-US" | replace: '_', '-' -%}
+{%- assign lang_base = lang | split: '-' | first  | downcase -%}
 {%- assign t = site.data.locales[lang] | default: site.data.locales['en-US'] -%}
 
 {%- include scripts/jekyll-theme-overkill/config.js -%}
+
+{%- if config.local_storage != false -%}
+{%- include scripts/jekyll-theme-overkill/features/local-storage.js -%}
+{%- endif -%}
 
 {%- if config.terms != false -%}
 {%- include scripts/jekyll-theme-overkill/helpers/base64.js -%}
@@ -14,15 +19,11 @@
 {%- include scripts/jekyll-theme-overkill/modules/article-index.js -%}
 {%- endif -%}
 
-{%- if config.flipcard != false -%}
-{%- include scripts/jekyll-theme-overkill/modules/flipcard.js -%}
-{%- endif -%}
-
 {%- if config.progress != false -%}
 {%- include scripts/jekyll-theme-overkill/modules/progress.js -%}
 {%- endif -%}
 
-{%- if config.filters != false -%}
+{%- if config.filters != false and config.lunr == false -%}
 {%- include scripts/jekyll-theme-overkill/modules/filters.js -%}
 {%- endif -%}
 
@@ -32,12 +33,6 @@
 
 {%- if config.speech_synthesis != false -%}
 {%- include scripts/jekyll-theme-overkill/features/speech-synthesis.js -%}
-{%- endif -%}
-
-{%- include scripts/jekyll-theme-overkill/common.js -%}
-
-{%- if config.local_storage != false -%}
-{%- include scripts/jekyll-theme-overkill/features/local-storage.js -%}
 {%- endif -%}
 
 {%- if config.page_transition != false -%}
@@ -63,7 +58,14 @@
 {%- endif -%}
 
 {%- if config.lunr != false -%}
+{%- include scripts/jekyll-theme-overkill/plugins/lunr.js -%}
+{%- comment -%}
 {%- include scripts/jekyll-theme-overkill/plugins/lunr.js store_name='lunrStore' store_path='/assets/data/documents.json' ref_key='id' search_input_selector='#search-input' items_container_selector='#search-items' results_container_selector='#search-results' message_container_selector='#search-message' -%}
+{%- endcomment -%}
+{%- endif -%}
+
+{%- if config.lazysizes != false -%}
+{%- include scripts/jekyll-theme-overkill/plugins/lazysizes.js -%}
 {%- endif -%}
 
 {%- if config.cookie_consent != false -%}
@@ -84,6 +86,11 @@
 {%- endif -%}
 {%- endcomment -%}
 
+
 {%- if config.terms != false -%}
 {%- include scripts/jekyll-theme-overkill/layouts/terms.js -%}
+{%- endif -%}
+
+{%- if config.flipcard != false -%}
+{%- include scripts/jekyll-theme-overkill/modules/flipcard.js -%}
 {%- endif -%}

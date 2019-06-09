@@ -1,23 +1,23 @@
 {% raw %}
-(function ($, window, document) {
+(($, window, document) => {
   'use strict';
 
-  var $togglers, $targets, $searchboxes;
+  const $togglers, $targets, $searchboxes;
 
 
   /**
   * Hide unchecked items
   */
 
-  var filter = function (action) {
+  var filter = (action) => {
     var $checkedTogglers = $togglers.filter(':checked');
 
     $targets.show();
     if (action !== false) {
 
       // Filter by attribut
-      $checkedTogglers.each(function () {
-        var target = $(this).attr('data-filter');
+      $checkedTogglers.each((index, element) => {
+        var target = $(element).attr('data-filter');
         if (target) {
           $targets.not(target).filter(':visible').hide();
         }
@@ -25,14 +25,14 @@
 
       /*
       // Filter by text
-      $searchboxes.each(function () {
-        var text = $(this).val().toLowerCase();
+      $searchboxes.each((index, element) => {
+        var text = $(element).val().toLowerCase();
         if (text) {
-          $targets.filter(':visible').each(function () {
-            var $target = $(this);
+          $targets.filter(':visible').each((index, element) => {
+            var $target = $(element);
             var matches = 0;
-            $target.find('h2, h3, h4, p').add($target).each(function () {
-              if ($(this).text().toLowerCase().indexOf("" + text + "") !== -1) {
+            $target.find('h2, h3, h4, p').add($target).each((index, element) => {
+              if ($(element).text().toLowerCase().indexOf("" + text + "") !== -1) {
                 matches = matches + 1;
               }
             });
@@ -49,7 +49,7 @@
 
 
 
-  $(function() {
+  $(() => {
 
 
     $togglers = $('.filter-toggler');
@@ -64,20 +64,20 @@
 
     if ($togglers.length) {
       var $collapses = $togglers.parents('.collapse');
-      $collapses.on('show.bs.collapse', function () {
+      $collapses.on('show.bs.collapse', (event) => {
         filter();
-        $togglers.change(function () {
+        $togglers.change((event) => {
           filter(true);
         });
         // Check the hidden "none" radio when user click a checked radio
-        //$togglers.click(function () {
+        //$togglers.click(() => {
         //  console.log("click");
-        //  if ($(this).is(':checked')) {
-        //    $toggles.filter('[name=' + $(this).attr('name') + '][value=none]').trigger('click');
+        //  if ($(event.currentTarget).is(':checked')) {
+        //    $toggles.filter('[name=' + $(event.currentTarget).attr('name') + '][value=none]').trigger('click');
         //  }
         //});
       });
-      $collapses.on('hide.bs.collapse', function () {
+      $collapses.on('hide.bs.collapse', () => {
         filter(false);
         $togglers.stop('change');
       });
@@ -90,7 +90,7 @@
     */
 
     if ($searchboxes.length && $targets.length) {
-      $searchboxes.on('input', function (e) {
+      $searchboxes.on('input', (e) => {
         console.log('Searchbox', e.type);
         $targets = $('.filter-target');
         filter(true);

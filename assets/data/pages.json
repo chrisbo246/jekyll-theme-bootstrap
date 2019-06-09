@@ -1,3 +1,4 @@
 ---
 ---
-{%- include helpers/lunr-store.html docs=site.pages -%}
+{%- assign docs = site.pages | where_exp: 'item', 'item.layout != nil' -%}
+{%- include helpers/lunr-documents.json docs=docs -%}

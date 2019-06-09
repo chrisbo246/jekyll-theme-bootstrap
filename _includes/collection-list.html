@@ -5,7 +5,7 @@
 {%- endif -%}
 {%- assign array = '' | split: ' ' -%}
 {%- if posts.size > 0 -%}
-<form class="checkbox-glyphicon checkbox-success" -data-persist="garlic" method="post">
+<form class="checkbox-glyphicon checkbox-success" method="post">
 {%- for post in posts -%}
   {%- if post[post.collection].size > 0 -%}
   {%- assign parents = site[post.collection] | where_exp: 'item', 'post[post.collection] contains item.slug' -%}

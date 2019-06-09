@@ -56,7 +56,12 @@
 @import 'bootstrap/scss/print';
 {% endraw %}{%- endif -%}{% raw %}
 
-
+{% endraw %}{%- if jekyll.environment != 'production' or config.select2 != false -%}{% raw %}
+@import "select2/src/scss/core";
+{% endraw %}{%- if jekyll.environment != 'production' or config.bootstrap != false -%}{% raw %}
+@import "select2-bootstrap4-theme/src/select2-bootstrap4";
+{% endraw %}{%- endif -%}{% raw %}
+{% endraw %}{%- endif -%}{% raw %}
 
 
 // Mixins ======================================================================
@@ -113,16 +118,16 @@
 //@import 'jekyll-theme-overkill/plugins/font-awesome';
 {% endraw %}{%- endif -%}{% raw %}
 
-{% endraw %}{%- if jekyll.environment != 'production' or config.syntax-highlighting != false -%}{% raw %}
+{% endraw %}{%- if jekyll.environment != 'production' or config.animate_css != false -%}{% raw %}
 @import 'jekyll-theme-overkill/plugins/animate-css';
 {% endraw %}{%- endif -%}{% raw %}
 
-{% endraw %}{%- if jekyll.environment != 'production' or config.browser-update != false -%}{% raw %}
+{% endraw %}{%- if jekyll.environment != 'production' or config.browser_update != false -%}{% raw %}
 //@import 'jekyll-theme-overkill/plugins/browser-update';
 {% endraw %}{%- endif -%}{% raw %}
 
-{% endraw %}{%- if jekyll.environment != 'production' or config.syntax-highlighting != false -%}{% raw %}
-//@import 'jekyll-theme-overkill/syntax-highlighting';
+{% endraw %}{%- if jekyll.environment != 'production' or config.syntax_highlighting != false -%}{% raw %}
+@import 'jekyll-theme-overkill/plugins/syntax-highlighting';
 {% endraw %}{%- endif -%}{% raw %}
 
 {% endraw %}{%- if jekyll.environment != 'production' or config.select2 != false -%}{% raw %}
@@ -137,8 +142,8 @@
 @import 'jekyll-theme-overkill/layouts/terms';
 {% endraw %}{%- endif -%}{% raw %}
 
-{% endraw %}{%- if jekyll.environment != 'production' or config.post_list != false -%}{% raw %}
-@import 'jekyll-theme-overkill/layouts/post-list';
+{% endraw %}{%- if jekyll.environment != 'production' or config.document_list != false -%}{% raw %}
+@import 'jekyll-theme-overkill/layouts/document-list';
 {% endraw %}{%- endif -%}{% raw %}
 
 

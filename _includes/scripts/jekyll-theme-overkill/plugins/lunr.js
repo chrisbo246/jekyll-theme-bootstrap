@@ -1,99 +1,70 @@
 {% raw %}
-(function() {
-  'use strict';
+/*
+((($, window, document) => {
 
-  var store;
+  if (typeof lunr === 'undefined') {
+    throw new Error('Lunr is not present. Please include / require Lunr before this script.');
+    return false;
+  }
 
-  var itemsContainer;
-  var resultsContainer;
-  var messageContainer;
-  var searchInput;
+  $('.lunr-list').each((index, element) => {
 
-  var storeName = '{% endraw %}{{ include.store_name | default: 'lunrStore' }}{% raw %}';
-  var storePath = '{% endraw %}{{ include.store_path | default: '/assets/data/documents.json' | relative_url }}{% raw %}';
-  var refKey = '{% endraw %}{{ include.ref_key | default: 'id' }}{% raw %}';
+  });
 
-  var itemsContainerSelector = '{% endraw %}{{ include.items_container_selector | default: '#search-items' }}{% raw %}';
-  var resultsContainerSelector = '{% endraw %}{{ include.results_container_selector | default: '#search-results' }}{% raw %}';
-  var messageContainerSelector = '{% endraw %}{{ include.message_container_selector | default: '#search-message' }}{% raw %}';
-  var searchInputSelector = '{% endraw %}{{ include.search_input_selector | default: '#search-input' }}{% raw %}';
+  $('.lunr-filter').each((index, element) => {
+
+  });
+
+}))(window.jQuery, window, document);
+*/
 
 
-  /**
-  *
-  */
+((($, window, document) => {
 
-  var displayResults = function (results) {
+  if (typeof lunr === 'undefined') {
+    throw new Error('Lunr is not present. Please include / require Lunr before this script.');
+    return false;
+  }
 
-    var html = '', items, selector;
+  let store;
+  let idx;
 
-    console.log('display lunr results', results);
-    if (results) {
+  let $itemsContainer;
+  let $resultsContainer;
+  let $messageContainer;
+  let $searchInput;
+  let $searchFields;
+  let $fields;
 
-      if (results.length) {
-        for (var r in results) {
-          for (var s in store) {
-            if (store[s][refKey] && store[s][refKey] === results[r].ref) {
-
-              selector = itemsContainerSelector + ' [data-ref="' + store[s][refKey] + '"]';
-              items = document.querySelectorAll(selector);
-
-              console.log('Display items', selector, items);
-
-              if (items.length) {
-                for (var i in items) {
-                  html += items[i].outerHTML || '';
-                }
-              }
-            }
-          }
-        }
-
-        if (messageContainer) {
-          messageContainer.setAttribute('hidden', 'hidden');
-        }
-
-      } else {
-
-        if (messageContainer) {
-          messageContainer.removeAttribute('hidden');
-        }
-
-      }
-
-      if (itemsContainer) {
-        itemsContainer.setAttribute('hidden', 'hidden');
-      }
-
-    } else {
-
-      if (messageContainer) {
-        messageContainer.setAttribute('hidden', 'hidden');
-      }
-      if (itemsContainer) {
-        itemsContainer.removeAttribute('hidden');
-      }
-
-    }
-
-    if (resultsContainer) {
-      resultsContainer.innerHTML = html;
-    }
-
+  const defaults = {
+    storeName: 'lunrStore',
+    storePath: null,
+    ref: 'id',
+    fields: ['title', 'categories', 'tags', 'description', 'excerpt', 'content'],
+    lang: 'en',
+    itemsContainerSelector: '#search-items',
+    resultsContainerSelector: '#search-results',
+    messageContainerSelector: '#search-message',
+    searchInputSelector: '#search-input',
+    fieldsSelector: '.lunr-field',
+    searchFieldsSelector: '.lunr-search-field',
+    searchInputName: 'query'
   };
 
+  const settings = Object.assign({}, defaults, window.lunrConfig);
+
 
 
   /**
-  * Extract URL parameters
-  */
+   * Extract URL parameters
+   */
 
-  var getUriParameter = function (variable) {
-    var query = window.location.search.substring(1);
-    var vars = query.split('&');
+  const getUriParameter = variable => {
+    const query = window.location.search.substring(1);
+    const vars = query.split('&');
 
-    for (var i = 0; i < vars.length; i++) {
-      var pair = vars[i].split('=');
+    for (const v of vars) {
+      const pair = v.split('=');
 
       if (pair[0] === variable) {
         return decodeURIComponent(pair[1].replace(/\+/g, '%20'));
@@ -102,11 +73,11 @@
   };
 
 
-  var insertParameter = function (key, value) {
+  const insertParameter = (key, value) => {
 
       key = encodeURI(key); value = encodeURI(value);
-      var kvp = document.location.search.substr(1).split('&');
-      var i=kvp.length; var x; while(i--) {
+      const kvp = document.location.search.substr(1).split('&');
+      let i=kvp.length; let x; while(i--) {
           x = kvp[i].split('=');
           if (x[0]==key) {
               x[1] = value;
@@ -125,20 +96,93 @@
 
 
   /**
+  *
+  */
+
+  const displayResults = results => {
+    let html = '';
+    let $items;
+    let selector;
+
+    if (results) {
+
+      if (results.length) {
+        for (const result of results) {
+          for (const s of store) {
+            if (s[settings.ref] && s[settings.ref] === result.ref) {
+
+              selector = `[data-lunr-ref="${s[settings.ref]}"]`;
+              $items = $itemsContainer.find(selector);
+
+              if ($items.length) {
+                $items.each((index, element) => {
+                  html += element.outerHTML;
+                });
+              }
+            }
+          }
+        }
+
+        if ($messageContainer) {
+          $messageContainer.attr('hidden', 'hidden');
+        }
+
+      } else {
+
+        if ($messageContainer) {
+          $messageContainer.removeAttr('hidden');
+        }
+
+      }
+
+      if ($itemsContainer) {
+        $itemsContainer.attr('hidden', 'hidden');
+      }
+
+    } else {
+
+      if ($messageContainer) {
+        $messageContainer.attr('hidden', 'hidden');
+      }
+      if ($itemsContainer) {
+        $itemsContainer.removeAttr('hidden');
+      }
+
+    }
+
+    if ($resultsContainer) {
+      $resultsContainer.html(html);
+    }
+  };
+
+
+
+  /**
   * Initialize lunr, definine search fields and data
   */
 
-  var getLunrInstance = function (options) {
+  //const getLunrInstance = () => lunr(() => {
+  const getLunrInstance = () => {
 
     return lunr(function () {
 
-      if (options.lang && lunr[options.lang]) {
-        this.use(lunr[options.lang]);
-        console.log('lunr', options.lang);
+      if (settings.lang) {
+        if (settings.lang.first) {
+          this.use(lunr.multiLanguage(settings.lang));
+          console.log('this.use(lunr.multiLanguage('+settings.lang+'));');
+        } else if (lunr[settings.lang]) {
+          this.use(lunr[settings.lang]);
+          console.log('this.use(lunr['+settings.lang+']);');
+        } else {
+          console.log('lunr lang not defined', settings.lang);
+        }
       }
 
-      this.ref(refKey);
+      if (settings.ref) {
+        this.ref(settings.ref);
+      }
 
+      /*
       this.field('collection');
       //this.field('alias');
       this.field('title', { boost: 10 });
@@ -150,86 +194,42 @@
       this.field('description');
       this.field('excerpt');
       //this.field('preview');
+      */
+
+      /*
       if (options.customFields.length) {
-        for (var key in options.customFields) {
+        for (const key in options.customFields) {
           this.field(key);
         }
       }
-
-      for (var key in store) {
-        this.add(store[key]);
-      }
-
-    });
-
-  };
+      */
 
 
+      // Search in checked fields only
+      const checked = [];
 
-  var init = function (err, data) {
-
-    document.addEventListener("DOMContentLoaded", function(event) {
-
-      if (data) {
-
-        store = data;
-
-        itemsContainer = document.querySelector(itemsContainerSelector);
-        resultsContainer = document.querySelector(resultsContainerSelector);
-        messageContainer = document.querySelector(messageContainerSelector);
-        searchInput = document.querySelector(searchInputSelector);
-
-        // Initialize lunr, definine search fields and data
-        var idx = getLunrInstance({
-          lang: '{% endraw %}{{ lang }}{% raw %}',
-          collection: '{% endraw %}{{ page.collection }}{% raw %}',
-          customFields: []
-        });
-
-        var searchFilters = [];
-        {% endraw %}
-        {%- assign collections = '' | split: ' ' -%}
-        {%- for collection in site.collections -%}
-        {%- if page[collection.label].length -%}
-
-        {%- endif -%}
-        {%- endfor -%}
-        {%- if page.collection -%}
-        //searchFilters.push('collection:{{ page.collection }}');
-        {%- endif -%}
-        {% raw %}
-
-        // Display results matching URL parameters
-        var searchTerms = getUriParameter('q');
-        if (searchTerms) {
-          var results = idx.search(searchTerms); // Get lunr to perform a search
-          displayResults(results);
-          if (searchInput) {
-            searchInput.setAttribute('value', searchTerms);
+      let value;
+      if ($fields) {
+        $fields.filter(':checked').each((index, element) => {
+          value = $(element).attr('data-lunr-field');
+          if (value) {
+            checked.push(value);
           }
-        } else {
-          displayResults();
+        });
+      }
+      if (settings.fields && settings.fields.length) {
+        for (const field of settings.fields) {
+          if (!checked.length || $.inArray(field, checked) !== -1) {
+            this.field(field);
+          }
         }
-
-        // Filter from searchbox
-        if (searchInput) {
-          searchInput.oninput = function (e) {
-            var searchTerms = this.value.trim();
-
-            if (searchTerms !== '') {
-              var results = idx.search(searchTerms + ' ' + searchFilters.join(' '));
-              displayResults(results);
-              //insertParameter('q', searchTerms);
-              history.pushState(null, null, encodeURI(decodeURI(location.href).replace(/([?&]q=)[^&]*/,'$1' + searchTerms)));
-            } else {
-              displayResults();
-              history.pushState(null, null, encodeURI(decodeURI(location.href).replace(/([?&]q=)[^&]*/,'')));
-            }
-          };
-        }
-
       }
 
+      if (store && store.length) {
+        store.forEach(function (doc) {
+          this.add(doc)
+        }, this)
+      }
 
     });
 
@@ -238,38 +238,135 @@
 
 
   /**
-  * Load a JSON file
-  */
+   * Build search query string from searchbox and selects
+   */
 
-  var getJSON = function(url, callback) {
-      var xhr = new XMLHttpRequest();
-      xhr.open('GET', url, true);
-      xhr.responseType = 'json';
-      xhr.onload = function() {
-        var status = xhr.status;
-        if (status === 200) {
-          callback(null, xhr.response);
-        } else {
-          callback(status, xhr.response);
+  const query = () => {
+
+    let terms = [];
+    let $input;
+    let field;
+    let value;
+    let values;
+
+    if ($searchInput.length) {
+      value = $searchInput.val();
+      if (value) {
+        terms.push(value);
+      }
+    }
+
+    if ($searchFields.length) {
+      $searchFields.each((index, element) => {
+        $input = $(element);
+        field = $input.attr('data-lunr-field');
+        //if (typeof $input.select2 !== 'undefined') {
+        //  values = $input.select2('val');
+        //} else {
+        values = $input.val();
+        //}
+        if (field && values) {
+          if (Array.isArray(values)) {
+            for (value of values) {
+              terms.push(`+${field}:${value}`);
+            }
+          } else {
+            terms.push(`+${field}:${values}`);
+          }
         }
-      };
-      xhr.send();
+      });
+    }
+
+    return terms.join(' ');
   };
 
 
 
-  if (typeof lunr === 'undefined') {
-    throw new Error('Lunr is not present. Please include / require Lunr before this script.');
-  } else {
-    // Load the custom store stored in a global variable (if defined)
-    // else load the site-wide JSON store
-    if (window[storeName]) {
-      init(null, window[storeName])
-    } else if (storePath) {
-      getJSON(storePath, init);
+  /**
+   * Perform a new search and display results when input value change
+   */
+
+  const search = query => {
+
+    /*
+    if (!query) {
+      displayResults();
+      return false;
     }
+
+    query = query.trim();
+    */
+    if (query && query !== '') {
+
+      // Get a new instance of Lunr with new fields selection
+      idx = getLunrInstance();
+
+      let results = idx.search(query);
+
+      displayResults(results);
+
+      //insertParameter('q', searchTerms);
+      //history.pushState(null, null, encodeURI(decodeURI(location.href).replace(/([?&]q=)[^&]*/,'$1' + searchTerms)));
+    } else {
+      displayResults();
+      //history.pushState(null, null, encodeURI(decodeURI(location.href).replace(/([?&]q=)[^&]*/,'')));
+    }
+
+  };
+
+
+
+  const init = data => {
+
+      if (data) {
+
+        store = data;
+
+        $itemsContainer = $(settings.itemsContainerSelector);
+        $resultsContainer = $(settings.resultsContainerSelector);
+        $messageContainer = $(settings.messageContainerSelector);
+        $searchInput = $(settings.searchInputSelector);
+        $fields = $(settings.fieldsSelector);
+        $searchFields = $(settings.searchFieldsSelector);
+        //$searchInput = document.getElementsByName(searchInputName);
+
+        // Display results matching URL parameters
+        const searchTerms = getUriParameter(settings.searchInputName);
+        if (searchTerms) {
+          search(searchTerms);
+          if ($searchInput) {
+            $searchInput.attr('value', searchTerms);
+          }
+        } else {
+          search(query());
+        }
+
+        $searchInput.on('input', () => {
+          search(query());
+        });
+
+        $fields.on('change', () => {
+          search(query());
+        });
+
+        $searchFields.on('change', () => {
+          search(query());
+        });
+
+      }
+
+  };
+
+
+
+  //document.addEventListener("DOMContentLoaded", (event) => {
+  // Load the custom store stored in a global variable (if defined)
+  // else load the site-wide JSON store
+  if (window[settings.storeName]) {
+    init(window[settings.storeName])
+  } else if (settings.storePath) {
+    $.getJSON(settings.storePath, init);
   }
-
-
-})();
+  //});
+}))(window.jQuery, window, document);
 {% endraw %}

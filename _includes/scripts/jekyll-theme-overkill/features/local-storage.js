@@ -4,34 +4,41 @@
 * Store / restore input values from the local storage
 */
 
-(function ($, window, document) {
-  'use strict';
+((($, window, document) => {
 
   if (typeof window.localStorage === 'undefined') {
-    console.log('Speech synthesis not supported by this browser.');
+    console.log('This browser does not support local storage.');
     return false;
   }
 
+  const storage = window.localStorage;
 
-  var storage = window.localStorage;
-
-  var defaultNamespace = encodeURIComponent(window.location.pathname) + ':';
-
+  //const defaultNamespace = `${encodeURIComponent(window.location.pathname)}:`;
+  const defaultNamespace = `${window.location.pathname}:`;
 
   // Store / restore checked definitions
 
-  var $inputs = $(':input').not('[data-storage="false"]'); //.filter('[id]');
+  const $inputs = $(':input').not('[data-local-storage="false"]'); //.filter('[id]');
   if ($inputs && $inputs.length) {
-    var $input, $label, name, id, checked, key, value, type, namespace;
+    let $input;
+    let $label;
+    let name;
+    let id;
+    let checked;
+    let key;
+    let value;
+    let type;
+    let namespace;
 
     // Restore inputs values from stored values
 
-    $inputs.each(function () {
-      $input = $(this);
+    $inputs.each((index, element) => {
+      $input = $(element);
       $label = $input.parent('.btn');
       name = $input.attr('name');
       id = $input.attr('id');
-      namespace = ($input.is('[data-global="false"]')) ? defaultNamespace : '';
+      //namespace = ($input.is('[data-local-storage-namespace="true"]')) ? defaultNamespace : $input.attr('data-local-storage-namespace');
+      namespace = $input.attr('data-local-storage-namespace') || '';
       type = $input.attr('type');
 
       if (type === 'radio') {
@@ -70,7 +77,7 @@
                 $input.prop('checked', value).trigger('click');
                 $label.addClass('active');
               } else {
-                $input.prop('value', value).trigger('change');
+                $input.val(value).trigger('change');
               }
             }
           }
@@ -82,13 +89,14 @@
 
     // Save input value to the local local storage
 
-    $inputs.on('change', function () {
+    $inputs.on('change input', (event) => {
 
-      $input = $(this);
+      $input = $(event.currentTarget);
       name = $input.attr('name');
-      value = $input.attr('value');
+      value = $input.val();
       id = $input.attr('id');
-      namespace = ($input.is('[data-global="false"]')) ? defaultNamespace : '';
+      //namespace = ($input.is('[data-local-storage-namespace="{{ page.url }}"]')) ? defaultNamespace : '';
+      namespace = $input.attr('data-local-storage-namespace') || '';
       type = $input.attr('type');
       checked = $input.prop('checked');
 
@@ -116,7 +124,9 @@
             value = JSON.stringify(value);
           }
           storage.setItem(namespace + key, value);
+
         }
+        //console.log('storage.setItem', (namespace + key), value);
       //}
 
     });
@@ -130,18 +140,25 @@
   }
 
 
-  var defaultNamespace = encodeURIComponent(window.location.pathname) + ':';
+  //const defaultNamespace = `${encodeURIComponent(window.location.pathname)}:`;
 
 
   /**
   * Keep alerts closed
   */
 
-  var $alert, $collapse, $togglers, key, value, namespace;
-  var $alerts = $('.alert-dismissible').filter('[id]').not('[data-storage="false"]');
-  $alerts.each(function () {
-    $alert = $(this);
-    namespace = ($alert.is('[data-global="false"]')) ? defaultNamespace : '';
+  let $alert;
+  let $collapse;
+  let $togglers;
+  let key;
+  let value;
+  let id;
+  let namespace;
+  const $alerts = $('.alert-dismissible').filter('[id]').not('[data-local-storage="false"]');
+  $alerts.each((index, element) => {
+    $alert = $(element);
+    //namespace = ($alert.is('[data-local-storage-namespace="{{ page.url }}"]')) ? defaultNamespace : '';
+    namespace = $alert.attr('data-local-storage-namespace');
     key = $alert.attr('id');
     value = JSON.parse(storage.getItem(namespace + key));
     if (value === 'closed') {
@@ -150,9 +167,10 @@
       $alert.removeAttr('hidden');
     }
   });
-  $alerts.on('closed.bs.alert', function () {
-    $alert = $(this);
-    namespace = ($alert.is('[data-global="false"]')) ? defaultNamespace : '';
+  $alerts.on('closed.bs.alert', (event) => {
+    $alert = $(event.currentTarget);
+    //namespace = ($alert.is('[data-local-storage-namespace="{{ page.url }}"]')) ? defaultNamespace : '';
+    namespace = $alert.attr('data-local-storage-namespace');
     key = $alert.attr('id');
     value = JSON.stringify('closed');
     storage.setItem(namespace + key, value);
@@ -165,8 +183,8 @@
   */
 
   /*$alerts = $('.alert-dismissible');
-  $alerts.on('close.bs.alert', function () {
-    $(this).addClass('zoomOutUp');
+  $alerts.on('close.bs.alert', (event) => {
+    $(event.currentTarget).addClass('zoomOutUp');
   });*/
 
 
@@ -175,38 +193,50 @@
   * Restore collapsed elements states
   */
 
-  var $collapses = $('.collapse').filter('[id]').not('[data-storage="false"]');
-  $collapses.on('hidden.bs.collapse', function () {
-    $collapse = $(this);
-    namespace = ($collapse.is('[data-global="false"]')) ? defaultNamespace : '';
-    key = this.id + '_collapse';
-    value = false;
-    storage.removeItem(namespace + key, JSON.stringify(value));
+  const $collapses = $('.collapse').filter('[id]').not('[data-local-storage="false"]');
+  $collapses.on('hidden.bs.collapse', (event) => {
+    $collapse = $(event.currentTarget);
+    id = $collapse.attr('id');
+    if (id) {
+      //namespace = ($collapse.is('[data-local-storage-namespace="{{ page.url }}"]')) ? defaultNamespace : '';
+      namespace = $collapse.attr('data-local-storage-namespace');
+      key = `${id}_collapse`;
+      value = false;
+      storage.removeItem(namespace + key, JSON.stringify(value));
+    }
   });
-  $collapses.on('shown.bs.collapse', function () {
-    $collapse = $(this);
-    namespace = ($collapse.is('[data-global="false"]')) ? defaultNamespace : '';
-    key = this.id + '_collapse';
-    value = true;
-    storage.setItem(namespace + key, JSON.stringify(value));
+  $collapses.on('shown.bs.collapse', (event) => {
+    $collapse = $(event.currentTarget);
+    id = $collapse.attr('id');
+    if (id) {
+      //namespace = ($collapse.is('[data-local-storage-namespace="{{ page.url }}"]')) ? defaultNamespace : '';
+      namespace = $collapse.attr('data-local-storage-namespace');
+      key = `${id}_collapse`;
+      value = true;
+      storage.setItem(namespace + key, JSON.stringify(value));
+    }
   });
-  $collapses.each(function (index, element) {
-    $togglers = $('button[data-target="#' + this.id + '"], a[href="#' + this.id + '"]');
-    $collapse = $(this);
-    namespace = ($togglers.is('[data-global="false"]')) ? defaultNamespace : '';
-    key = this.id + '_collapse';
-    value = JSON.parse(storage.getItem(namespace + key));
-    if (value === true) {
-      $(this).collapse('show');
-      $togglers.addClass('active');
-    } else {
-      $(this).collapse('hide');
-      $togglers.removeClass('active');
+  $collapses.each((index, element) => {
+    $collapse = $(element);
+    id = $collapse.attr('id');
+    if (id) {
+      $togglers = $(`button[data-target="#${id}"], a[href="#${id}"]`);
+      //console.log('toggler', `button[data-target="#${id}"], a[href="#${id}"]`);
+      //console.log('$collapse', $collapse);
+      //namespace = ($togglers.is('[data-local-storage-namespace="{{ page.url }}"]')) ? defaultNamespace : '';
+      namespace = $togglers.attr('data-local-storage-namespace');
+      key = `${id}_collapse`;
+      value = JSON.parse(storage.getItem(namespace + key));
+      if (value === true) {
+        $collapse.collapse('show');
+        $togglers.addClass('active');
+      } else {
+        $collapse.collapse('hide');
+        $togglers.removeClass('active');
+      }
     }
   });
 
   $('html').addClass('collapse-active');
-
-
-  })(window.jQuery, window, document);
-  {% endraw %}
+}))(window.jQuery, window, document);
+{% endraw %}

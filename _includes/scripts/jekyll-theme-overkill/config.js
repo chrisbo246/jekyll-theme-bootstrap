@@ -1,31 +1,25 @@
 {% raw %}
 
 // =============================================================================
-// Plugins configs
+// Plugin configs
 // =============================================================================
 
 // https://help.disqus.com/developer/javascript-configuration-variables
-// Page identifier is used in disqus comment count module
 window.disqus_config = function () {
-  //this.language = '{% endraw %}{{ lang | replace: '-', '_' }}{% raw %}';
   this.language = '{% endraw %}{{ lang | split: '-' | first }}{% raw %}';
   this.page.identifier = '{% endraw %}{{ page.url }}{% raw %}';
   this.page.url = '{% endraw %}{{ page.url | absolute_url }}{% raw %}';
   this.page.title = '{% endraw %}{{ page.title | escape }}{% raw %}';
   this.page.category_id = '{% endraw %}{{ page.disqus.category_id }}{% raw %}';
-  this.callbacks.afterRender = [function() {
-    // your code here
-  }];
+  //this.callbacks.afterRender = [function () {
+  //  // your code here
+  //}];
 };
+
 
 // https://github.com/aFarkas/lazysizes
 window.lazySizesConfig = {% endraw %}{{ site.lazysizes | jsonify }}{% raw %};
-/*
-window.lazySizesConfig = window.lazySizesConfig || {};
-//window.lazySizesConfig.init = false;
-window.lazySizesConfig.loadMode = 1;
-//window.lazySizesConfig.preloadAfterLoad = true;
-*/
+
 
 // https://cookieconsent.insites.com/documentation/javascript-api/
 window.cookieConsentConfig = {% endraw %}{{ site.cookie_consent | jsonify }}{% raw %};
@@ -61,107 +55,22 @@ window.cookieConsentConfig.compliance = {
 // =============================================================================
 
 window.soundPlayerConfig = {% endraw %}{{ site.sound_player | jsonify }}{% raw %};
-{% endraw %}
-{%- for sound in site.sound_player.sounds -%}
-{% raw %}
+{% endraw %}{%- for sound in site.sound_player.sounds -%}{% raw %}
 window.soundPlayerConfig.sounds[{% endraw %}{{ forloop.index0 }}{% raw %}].filePath = '{% endraw %}{{ sound.filePath | relative_url }}{% raw %}';
-{% endraw %}
-{%- endfor-%}
-{% raw %}
+{% endraw %}{%- endfor-%}{% raw %}
 
-/*
-window.soundPlayerConfig = {
-  container: 'body',
-  playerAttributes: {
-    class: 'sound-player',
-    preload: 'none' // auto, metadata, none
-  },
-  // https://freesound.org/search/?q=&f=license%3A%22Creative+Commons+0%22+type%3A%22ogg%22&s=duration+asc&advanced=0&g=1
-  sounds: [
-    {
-      playerId: 'button-click-sound-player',
-      togglerSelector: '.btn:not([data-toggle="dropdown"])',
-      togglerEvent: 'mousedown',
-      filePath: '{% endraw %}{{ 'assets/sounds/click.ogg' | relative_url }}{% raw %}'
-    },
-    {
-      playerId: 'nav-click-sound-player',
-      togglerSelector: '.nav-link',
-      togglerEvent: 'click',
-      filePath: '{% endraw %}{{ 'assets/sounds/click.ogg' | relative_url }}{% raw %}'
-    },
-    {
-      playerId: 'flip-sound-player',
-      togglerSelector: 'input.flipcard-position',
-      togglerEvent: 'change',
-      filePath: '{% endraw %}{{ 'assets/sounds/flip.ogg' | relative_url }}{% raw %}'
-    },
-    {
-      playerId: 'select-click-sound-player',
-      togglerSelector: 'select, .select2',
-      togglerEvent: 'click',
-      filePath: '{% endraw %}{{ 'assets/sounds/pop-up.ogg' | relative_url }}{% raw %}'
-    },
-    {
-      playerId: 'show-dropdown-sound-player',
-      togglerSelector: '[data-toggle="dropdown"]',
-      togglerEvent: 'show.bs.dropdown',
-      filePath: '{% endraw %}{{ 'assets/sounds/pop-up.ogg' | relative_url }}{% raw %}'
-    },
-    {
-      playerId: 'show-popover-sound-player',
-      togglerSelector: '[data-toggle="popup"]',
-      togglerEvent: 'show.bs.popover',
-      filePath: '{% endraw %}{{ 'assets/sounds/pop-up.ogg' | relative_url }}{% raw %}'
-    },
-    {
-      playerId: 'show-collapse-sound-player',
-      togglerSelector: '.collapse',
-      togglerEvent: 'show.bs.collapse',
-      filePath: '{% endraw %}{{ 'assets/sounds/slide.ogg' | relative_url }}{% raw %}'
-    },
-    {
-      playerId: 'hide-collapse-sound-player',
-      togglerSelector: '.collapse',
-      togglerEvent: 'hide.bs.collapse',
-      filePath: '{% endraw %}{{ 'assets/sounds/slide.ogg' | relative_url }}{% raw %}'
-    },
-    {
-      playerId: 'close-alert-sound-player',
-      togglerSelector: '.alert',
-      togglerEvent: 'close.bs.alert',
-      filePath: '{% endraw %}{{ 'assets/sounds/no.ogg' | relative_url }}{% raw %}'
-    },
-    {
-      playerId: 'show-modal-sound-player',
-      togglerSelector: '.modal',
-      togglerEvent: 'show.bs.modal',
-      filePath: '{% endraw %}{{ 'assets/sounds/slide.ogg' | relative_url }}{% raw %}'
-    },
-    {
-      playerId: 'close-modal-sound-player',
-      togglerSelector: '.modal',
-      togglerEvent: 'close.bs.modal',
-      filePath: '{% endraw %}{{ 'assets/sounds/no.ogg' | relative_url }}{% raw %}'
-    },
-    {
-      playerId: 'memorized-sound-player',
-      togglerSelector: 'input.memorized',
-      togglerEvent: 'change',
-      filePath: '{% endraw %}{{ 'assets/sounds/yes.ogg' | relative_url }}{% raw %}'
-    },
-    {
-      playerId: 'unmemorized-sound-player',
-      togglerSelector: 'input.unmemorized',
-      togglerEvent: 'change',
-      filePath: '{% endraw %}{{ 'assets/sounds/no.ogg' | relative_url }}{% raw %}'
-    }
-  ]
-};
-*/
 
-// Custom config
+window.lunrConfig = {% endraw %}{{ page.lunr | jsonify }}{% raw %};
+{% endraw %}{{ unless page.lunr.lang }}{% raw %}
+window.lunrConfig.lang = {% endraw %}{{ lang_base | jsonify }}{% raw %};
+{% endraw %}{{ endunless }}{% raw %}
+{% endraw %}{% if page.lunr.storePath %}{% raw %}
+window.lunrConfig.storePath = {% endraw %}{{ page.lunr.storePath | relative_url | jsonify }}{% raw %};
+{% endraw %}{% endif %}{% raw %}
+
+
 window.disqusConfig = {% endraw %}{{ site.disqus | jsonify }}{% raw %};
 
+window.backToTopConfig = {% endraw %}{{ page.back_to_top | jsonify }}{% raw %};
 
 {% endraw %}

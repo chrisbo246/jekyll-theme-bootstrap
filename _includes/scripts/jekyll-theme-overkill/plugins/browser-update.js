@@ -15,9 +15,9 @@ $buoop = {
     //reminderClosed: 150,
     // si le visiteur ferme explicitement le message, il réapparaît après x heures
 
-    //onshow: function(infos){},
-    //onclick: function(infos){},
-    //onclose: function(infos){},
+    //onshow: (infos) =>{},
+    //onclick: (infos) =>{},
+    //onclose: (infos) =>{},
     // fonctions de rappel après que la notification a été publiée / a été cliquée / fermée
 
     //l: false,
@@ -65,7 +65,7 @@ $buoop = {
 
 
 function $buo_f(){
- var s = document.createElement('script');
+ const s = document.createElement('script');
  s.src = '//browser-update.org/update.min.js';
  s.async = true;
  s.setAttribute('data-timestamp', +new Date());

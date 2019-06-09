@@ -1,27 +1,26 @@
 {% raw %}
-var filtersModule = (function () {
-    'use strict';
-
-    var data = {},
-    $reset,
-    $collectionFilters,
-    $searchFilter,
-    $items;
+const filtersModule = ((() => {
+    const data = {};
+    let $reset;
+    let $collectionFilters;
+    let $searchFilter;
+    let $items;
 
 
     /**
      * Filter items using selected collections
      */
-    var filterCollections = function ($visibleItems) {
+    const filterCollections = $visibleItems => {
+        const $inputs = $collectionFilters;
 
-        var $inputs = $collectionFilters;
+        let $input;
+        let filter;
+        let values;
+        let selector = '';
 
-        var $input, filter, values;
-        var selector = '';
+        $inputs.each((index, element) => {
 
-        $inputs.each(function () {
-
-            $input = $(this);
+            $input = $(element);
             filter = $input.data('filter');
             values = $input.val();
 
@@ -29,8 +28,8 @@ var filtersModule = (function () {
                 if (!$.isArray(values)) {
                     values = [values];
                 }
-                values.forEach(function (value) {
-                    selector = selector + '[data-' + filter + '~="' + value + '"]';
+                values.forEach(value => {
+                    selector = `${selector}[data-${filter}~="${value}"]`;
                 });
             }
 
@@ -42,16 +41,15 @@ var filtersModule = (function () {
         }
 
         return $visibleItems;
-
     };
 
 
     /**
      * Filter items from input query
      */
-    var filterSearch = function ($visibleItems) {
+    const filterSearch = $visibleItems => {
 
-        var $input = $searchFilter;
+        const $input = $searchFilter;
 
         return $visibleItems;
 
@@ -62,23 +60,24 @@ var filtersModule = (function () {
     /**
      * Init collection filters
      */
-    var initCollectionFilters = function () {
-
-        var $inputs = $collectionFilters;
+    const initCollectionFilters = () => {
+        const $inputs = $collectionFilters;
         if (!$inputs) {
             return false;
         }
 
         // Save filters default values in a data attribute
-        var $input, value;
-        $inputs.each(function () {
-            $input = $(this);
+        let $input;
+
+        let value;
+        $inputs.each((index, element) => {
+            $input = $(element);
             value = $input.val();
             $input.attr('data-default', value);
         });
 
         // When a collection filter change, display matching posts
-        $inputs.on('change', function () {
+        $inputs.on('change', () => {
             console.log('Collection filter changed');
             filterItems();
         });
@@ -86,13 +85,12 @@ var filtersModule = (function () {
         // Apply filter when input values restored from the local storage
         if ($().garlic) {
           $inputs.garlic({
-              onRetrieve: function (elem, retrievedValue) {
+              onRetrieve(elem, retrievedValue) {
                   console.log('Collection filter retrieved', retrievedValue);
                   filterItems();
               }
           });
         }
-
     };
 
 
@@ -101,15 +99,15 @@ var filtersModule = (function () {
     /**
      * Init search filter
      */
-    var initSearchFilter = function () {
+    const initSearchFilter = () => {
 
-        var $input = $searchFilter;
+        const $input = $searchFilter;
         if (!$input) {
             return false;
         }
 
         // When the selection filter change, display matching posts
-        $input.on('keyup', function () {
+        $input.on('keyup', () => {
             filterItems();
         });
 
@@ -120,14 +118,14 @@ var filtersModule = (function () {
     /**
      * Restore every filter values
      */
-    var reset = function () {
+    const reset = () => {
 
-        var value;
+        let value;
 
-        var $inputs = $collectionFilters;
+        const $inputs = $collectionFilters;
         if ($inputs) {
-            $inputs.each(function () {
-                $input = $(this);
+            $inputs.each((index, element) => {
+                $input = $(element);
                 value = $input.data('default');
                 $input.val(value).trigger('change');
             });
@@ -139,9 +137,9 @@ var filtersModule = (function () {
     /**
      * Filter items using selected values
      */
-    var filterItems = function () {
+    const filterItems = () => {
 
-        var $visibleItems = $items;
+        let $visibleItems = $items;
 
         //$visibleItems.hide();
         //$visibleItems.css('opacity', 0.2);
@@ -158,7 +156,7 @@ var filtersModule = (function () {
 
 
 
-    $(function() {
+    $(() => {
 
         $reset = $('.filter-reset');
         $collectionFilters = $('.filter');
@@ -169,11 +167,10 @@ var filtersModule = (function () {
         initSearchFilter();
 
         // Init reset button
-        $reset.on('click', function () {
+        $reset.on('click', () => {
             reset();
         });
 
     });
-
-})();
+}))();
 {% endraw %}

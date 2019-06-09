@@ -1,10 +1,10 @@
 ---
-layout: post-list
+layout: document-list
 title: "Products"
-permalink: /products/
-related:
-  collection: "products"
-categories: ["list"]
+#permalink: /products/
+lang: en-US
+translation_ref: products.md
+categories: [list]
 description:
 excerpt:
 keywords: []
@@ -20,17 +20,18 @@ features:
   filters: true
   lunr: true
   select2: true
-  post_list: true
+  document_list: true
 
 sidebar:
   modules: ['modules/sidebar/filters.html']
 
-post_preview:
-  module: modules/post-list/post-list-flipcard.html
+document_list:
+  collection: products
+  module: modules/document-list/document-list-flipcard.html
 
 nav_item:
   group: "primary-nav"
-  position: 4
+  position: 5
   label: "Products"
   icon:
     class:

@@ -1,16 +1,19 @@
 
 baseurl: "/jekyll-theme-overkill" # the subpath of your site, e.g. /repo
 
-theme: jekyll-theme-overkill
+#theme: jekyll-theme-overkill
+theme: minima
 
 # https://pages.github.com/versions/
 plugins:
- - jekyll-feed
- - jekyll-seo-tag
- - jekyll-github-metadata
  - jekyll-avatar
+ - jekyll-feed
+ - jekyll-github-metadata
+ - jekyll-seo-tag
+ - jekyll-sitemap
  - jemoji
-
+ - kramdown
+ - rouge
 
 
 # ------------------------------------------------------------------------------
@@ -28,7 +31,7 @@ sass:
   load_paths:
     - _sass
     - node_modules
-
+    - assets/node_modules
 
 
 # ------------------------------------------------------------------------------
@@ -63,22 +66,24 @@ exclude:
 
 # Copy (jekyll defaults and previously) excluded files to the destination directory when running jekyll build
 include:
-  - node_modules/@fortawesome/font-awesome/*.css
-  - node_modules/@fortawesome/font-awesome/*.js
+  - node_modules/@fortawesome/fontawesome-free/js/*.min.js
   - node_modules/animate.css/*.css
-  - node_modules/bootstrap/dist
+  - node_modules/bootstrap/dist/js/*.min.js
   - node_modules/bootstrap/scss
   - node_modules/bootswatch/dist
   - node_modules/cookieconsent/build
-  - node_modules/font-awesome/fonts
-  - node_modules/font-awesome/scss
-  - node_modules/font-awesome/svg-with-js
-  - node_modules/font-awesome/advanced-options
-  - node_modules/jquery/dist
-  - node_modules/lazysizes/*.js
+  - node_modules/jquery/dist/*.min.js
+  - node_modules/jquery-mousewheel/*.js
+  - node_modules/lazysizes/*.min.js
+  - node_modules/lazysizes/plugins/aspectratio/*.min.js
+  - node_modules/lazysizes/plugins/parent-fit/*.min.js
   - node_modules/lunr/*.js
   - node_modules/lunr-languages/min
-  - node_modules/popper.js/dist
+  - node_modules/popper.js/dist/umd/*.min.js
+  - node_modules/select2/dist/js/*.min.js
+  - node_modules/select2/src/scss/*
+  - node_modules/select2-bootstrap4-theme/src
+
 
 # Do not delete/copy this (static) files from/to the destination directory each time you're running jekyll build (improve build time)
 keep_files:
@@ -97,31 +102,31 @@ collections:
   #categories:
   #  output: true
   #  title: "Categories"
-  #  permalink: /categories/:title.html
+  #  permalink: /categories/:title
   #tags:
   #  output: true
   #  title: "Tags"
-  #  permalink: /tags/:title.html
-  alerts:
-    output: true
-    title: "Alerts"
-    permalink: /alerts/:title.html
+  #  permalink: /tags/:title
+  #alerts:
+  #  output: true
+  #  title: "Alerts"
+  #  #permalink: /alerts/:title
   products:
     output: true
     title: "Products"
-    permalink: /products/:title.html
+    #permalink: /products/:title
   brands:
     output: false
     title: "Brands"
-    permalink: /brands/:title.html
+    #permalink: /brands/:title
   tips:
     output: false
     title: "Tips"
-    permalink: /tips/:title.html
+    #permalink: /tips/:title
   terms:
     output: true
     title: "Terms"
-    permalink: /terms/:title.html
+    #permalink: /terms/:title
 
 
 
@@ -137,46 +142,58 @@ defaults:
     values:
       default0: 1
       defaults: 1
+      #permalink: /:title
       author: chrisbo246
       publisher: chrisbo246
+      lang: en-US
       image: assets/images/default.png
       #date: 2017-01-01 00:00:00 +0100
-      features:
-        back-to-top: true
+      plugins:
+        #animate_css: true
         bootstrap: true
-        card: false
-        flipcard: false
-        post_list: false
-        cookie_consent: true
-        disqus: false
-        edit_on_github: false
-        filters: false
-        font_awesome: true
-        google_adsense: true
-        google_analytics: true
-        index: false
-        lazysizes: true
-        local_storage: true
+        #cookie_consent: true
+        #font_awesome: true
+        #lazysizes: true
         lunr: false
-        select2: true
+        select2: false
+        #google_adsense: true
+        #google_analytics: true
+        #disqus: false
+      features:
+        ads: true
+        author: false
+        back_to_top: true
+        card: false
+        categories: true
+        comments: false
+        cookie_consent: true
+        date: false
+        document_list: false
+        ghpages_link: false
+        filters: false
+        flipcard: false
+        icons: true
+        index: false
+        lazyload: true
+        local_storage: true
+        multilingual: true
+        page_transition: true
+        selection: false
         smooth_scroll: true
         social_icons: false
         sound_player: true
         speech_synthesis: false
-        terms: false
-        page_transition: true
-        date: false
-        author: false
-        categories: true
+        syntax_highlighting: false
         tags: true
-      edit_on_github_link:
+        terms: false
+      ghpages_link:
         class: 'navbar-toggler'
         text:
           class: 'text-hide'
         icon:
           class: 'fas fa-edit fa-lg fa-fw'
       back_to_top_link:
-        class: 'navbar-toggler'
+        #class: 'btn btn-outline-secondary position-fixed tooltip m-3'
         text:
           class: 'text-hide'
         icon:
@@ -207,24 +224,39 @@ defaults:
           class: 'fas fa-cog fa-lg fa-fw'
       top_navbar:
         modules: ['modules/navbar/navbar-breadcrumb.html']
-        class: 'navbar -navbar-expand-lg navbar-dark bg-dark d-flex flex-row justify-content-between animated fadeInDown'
+        class: 'navbar navbar-dark bg-dark justify-content-between animated fadeInDown'
         position: 'fixed-top'
       bottom_navbar:
-        modules: [modules/nav/comments-toggler.html, modules/nav/tip-link.html, modules/nav/feed-link.html, modules/nav/settings-toggler.html, modules/nav/back-to-top-link.html]
-        class: 'navbar navbar-light bg-light d-flex flex-row justify-content-between w-100 animated fadeInUp'
+        modules: ['modules/navbar/action_nav.html']
+        class: 'navbar navbar-light bg-light justify-content-between animated fadeInUp'
         position: 'fixed-bottom'
+      action_nav:
+        modules: [modules/bottom_navbar/nav-toggler.html, modules/bottom_navbar/comments-toggler.html, modules/bottom_navbar/tip-link.html, modules/bottom_navbar/edit-on-github-link.html, modules/bottom_navbar/settings-toggler.html]
+        extra_class: 'navbar-nav nav-fill flex-row w-100'
+        button:
+          extra_class: 'nav-item px-2'
+        icon:
+          extra_class: 'fas fa-3x fa-lg fa-fw d-inline-block nav-link pb-0'
+        text:
+          extra_class: 'small text-uppercase nav-link pt-0'
       article_header:
         modules: [modules/article/alerts.html, modules/article/title.html]
       article_footer:
         modules: [modules/article/disqus-comments.html]
       sidebar:
-        modules: ['modules/sidebar/vertical-primary-nav.html']
+        modules: [modules/sidebar/vertical-primary-nav.html]
         extra_class: 'col-sm-4 col-md-4 col-lg-3 col-xl-2 order-2 pl-0'
       filters:
         modules: ['modules/filters/search-input.html', 'modules/filters/meta-filters.html']
         keys: [categories, tags]
         direction: 'vertical'
-      #settings:
+      lunr:
+        ref: path
+        fields: [collection, title, categories, tags, author, description, content, pages, tips, brands]
+        storeName: lunrStore
+        #lang: [en, fr, ru]
+      settings:
+        modules: [modules/settings/language.html]
       #  modules: [modules/settings/user-profile-settings.html]
       navbar_brand:
         name:
@@ -235,8 +267,8 @@ defaults:
           #width: 32
           #height: 32
           #class:
-      post_preview:
-        module: modules/post-list/post-list-group.html
+      document_list:
+        module: modules/document-list/document-list-group.html
       card:
         image_display: true
         categories_display: true
@@ -262,7 +294,7 @@ defaults:
 #    values:
 #      defaults: 3
 #      layout: "page"
-#      permalink: /categories/:title.html
+#      permalink: /categories/:title
 #  -
 #    scope:
 #      path: "_tags"
@@ -270,9 +302,16 @@ defaults:
 #    values:
 #      defaults: 4
 #      layout: "page"
-#      permalink: /tags/:title.html
+#      permalink: /tags/:title
 #      sidebar:
 #        modules: ["modules/sidebar/tag-cloud.html"]
+  -
+    scope:
+      path: "fr-FR/"
+      lang: fr-FR
+    values:
+      defaults: fr
+      #permalink: /fr-FR/:title
   -
     scope:
       path: ""
@@ -294,21 +333,22 @@ defaults:
       related_collections: [categories, tags]
       features:
         index: true
-        disqus: true
+        comments: true
         date: true
         author: true
         categories: true
         tags: true
         social_icons: true
-      alerts: [_alerts/example.md]
-      bottom_navbar:
-        modules: [modules/nav/comments-toggler.html, modules/nav/edit-on-github-link.html, modules/nav/back-to-top-link.html]
+        syntax-highlighting: true
+      alerts: [_tips/example.md]
+      #bottom_navbar:
+        #modules: [modules/bottom_navbar/nav-toggler.html, modules/bottom_navbar/comments-toggler.html, modules/bottom_navbar/edit-on-github-link.html]
       article_header:
         modules: [modules/article/alerts.html, modules/article/title.html, modules/article/metas.html]
       article_footer:
-        modules: [modules/article/author-box.html, modules/article/disqus-comments.html]
+        modules: [modules/article/disqus-comments.html]
       sidebar:
-        modules: ['modules/sidebar/index.html', 'modules/sidebar/tag-cloud.html']
+        modules: ['modules/sidebar/index.html', 'modules/article/author-box.html', 'modules/sidebar/tag-cloud.html']
   -
     scope:
       path: "_terms"
@@ -317,44 +357,67 @@ defaults:
       defaults: 7
       layout: "terms"
       related_collection: [categories, tags]
-      features:
+      plugins:
         disqus: true
+        select2: true
+      features:
+        comments: true
         terms: true
         card: true
         flipcard: true
         index: true
-        select2: true
         speech_synthesis: true
       article_header:
         modules: []
       sidebar:
-        modules: ['modules/sidebar/index.html']
+        modules: ['bootstrap-components/progress-bar.html', 'modules/sidebar/index.html']
       settings:
-        modules: ['modules/settings/speech-synthesis-settings.html']
+        modules: ['modules/settings/language.html', 'modules/settings/speech-synthesis-settings.html']
+  #-
+  #  scope:
+  #    path: "_alerts"
+  #    type: "alerts"
+  #  values:
+  #    defaults: 8
+  #    layout: "page"
+  #    related_collections: [categories, tags]
   -
     scope:
       path: "_tips"
       type: "tips"
     values:
-      defaults: 8
-      layout: "tip"
-      related_collentions: [categories, tags]
+      defaults: 9
+      layout: "page"
+      related_collections: [categories, tags]
   -
     scope:
       path: "_products"
       type: "products"
     values:
-      defaults: 9
-      layout: "collection-item"
+      defaults: 10
+      layout: "product"
       related_collections: [brands]
+      features:
+        selection: true
+      sidebar:
+        modules: ['modules/sidebar/selection.html']
       settings:
-        modules: [modules/settings/user-profile-settings.html]
+        modules: ['modules/settings/language.html', 'modules/settings/user-profile-settings.html']
 
 
 
 # ------------------------------------------------------------------------------
 # Plugins variables
 # ------------------------------------------------------------------------------
+
+
+markdown: kramdown
+highlighter: rouge
+
+# https://kramdown.gettalong.org/options.html
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
 
 # https://github.com/jekyll/jekyll-seo-tag
 title: jekyll-theme-overkill
@@ -373,22 +436,28 @@ webmaster_verifications:
   yandex:
   baidu:
 twitter:
-  username: chrisbo246
+  username: jekyll-theme-overkyll
   card:
 facebook:
-  app_id:
-  publisher:
+  app_id: jekyll-theme-overkyll
+  publisher: jekyll-theme-overkyll
   admins:
-google_plus: chrisbo246
-#social:
-#  name:
-#  links:
-#    - https://twitter.com/BenBalter
-#    - https://www.facebook.com/ben.balter
-#    - https://www.linkedin.com/in/BenBalter
-#    - https://plus.google.com/+BenBalter
-#    - https://github.com/benbalter
-#    - https://keybase.io/benbalter
+# https://developers.google.com/search/docs/data-types/social-profile
+social:
+  name:
+  links:
+    - https://chrisbo246/github.com/jekyll-theme-overkyll
+    - https://www.facebook.com/jekyll-theme.overkyll
+    - https://twitter.com/jekyll-theme-overkyll
+    - https://plus.google.com/+jekyll-theme-overkyll
+    - https://instagram.com/jekyll-theme.overkyll
+    - https://youtube.com/jekyll-theme.overkyll
+    - https://www.linkedin.com/in/jekyll-theme-overkyll
+    - https://myspace.com/jekyll-theme-overkyll
+    - https://pinterest.com/jekyll-theme-overkyll
+    - https://soundcloud.com/jekyll-theme-overkyll
+    - https://tumblr.com/jekyll-theme-overkyll
+    - https://keybase.io/jekyll-theme-overkyll
 
 # https://github.com/jekyll/github-metadata
 repository: chrisbo246/jekyll-theme-overkill

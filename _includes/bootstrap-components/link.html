@@ -1,5 +1,5 @@
 
-<a class="{{ include.class }}" href="{{ include.target }}" {% if include.text_class contains 'hide-text' %}title="{{ include.text }}"{% endif %} role="button" aria-label="{{ include.text }}" {{ include.extra-attributs }}>
+<a {% if include.id %} id="{{ include.id }}"{% endif %}{% if include.class %} class="{{ include.class }}"{% endif %}{% if include.target %} href="{{ include.target }}"{% endif %}{% if include.text_class contains 'hide-text' %} title="{{ include.text }}"{% endif %} role="button" aria-label="{{ include.text }}" {{ include.extra-attributs }}>
 
   {%- if include.icon_class -%}
   <i class="{{ include.icon_class }}" aria-hidden="true"></i>

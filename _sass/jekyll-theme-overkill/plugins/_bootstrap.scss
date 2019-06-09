@@ -64,9 +64,11 @@
 
 [data-toggle="collapse"] {
 
-  .fa-caret-right,
-  .fa-caret-up {
-    display: none;
+  &:not(.collapsed) {
+    .fa-caret-right,
+    .fa-caret-up {
+      display: none;
+    }
   }
 
   &.collapsed {
@@ -76,4 +78,32 @@
     }
   }
 
+}
+
+
+// Blurred modal backgroun
+
+.modal-dialog-fullscreen {
+  min-width: 100%;
+  margin: 0;
+  .modal-content {
+    min-height: 100%;
+    @include border-radius(0);
+  }
+  .modal-header {
+    @include border-top-radius(0);
+  }
+}
+
+//.modal-backdrop {}
+
+.modal-open :not(.modal) {
+  .container-fluid,
+  .container {
+    -webkit-filter: blur(5px) grayscale(90%);
+    -moz-filter: blur(5px) grayscale(90%);
+    -o-filter: blur(5px) grayscale(90%);
+    -ms-filter: blur(5px) grayscale(90%);
+    filter: blur(5px) grayscale(90%);
+  }
 }

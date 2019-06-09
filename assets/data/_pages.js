@@ -4,7 +4,7 @@
 window.lunrStore = [
 {%- if site.pages.size != 0 -%}{%- for post in site.pages -%}{%- if post.title -%}{%- capture preview -%}
   <div class="{% include partials/post-tag-filter-classes.html post=post %}">
-    <input type="radio" id="flipcard_position_{{ post.url | slugify: 'default' }}" name="flipcard_position" value="{{ post.url }}" class="flipcard-position d-none" data-storage="false" />
+    <input type="radio" id="flipcard_position_{{ post.url | slugify: 'default' }}" name="flipcard_position" value="{{ post.url }}" class="flipcard-position d-none" data-local-storage="false" />
     <div class="card flipcard m-1">
       {%- if post.weight > 0 -%}{%- assign class = 'bg-primary text-white' -%}{%- else -%}{%- assign class = 'bg-dark text-white' -%}{%- endif -%}
       {%- include bootstrap-components/card.html face="front" post=post class="card-position-absolute" img-class="card-img-faded card-img-grayscale" title-class="h2 font-weight-bold" -%}

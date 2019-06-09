@@ -1,8 +1,0 @@
----
-layout: page
----
-
-{{ content }}
-
-{%- assign posts = site.tips | where_exp: 'item', 'item.lang == page.lang' -%}
-{%- include modules/post-list/post-list-accordion.html id="tip" posts=posts icon_oi="question-mark" icon_fa="fas fa-question-circle fa-lg" -%}

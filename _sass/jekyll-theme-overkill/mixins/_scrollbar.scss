@@ -6,22 +6,17 @@
     width: $size;
   }
 
-  ::-webkit-scrollbar-thumb {
-    background: $foreground-color;
-  }
-
   ::-webkit-scrollbar-track {
     background: $background-color;
   }
 
+  ::-webkit-scrollbar-thumb {
+    background: $foreground-color;
+  }
+
   body {
-    //-webkit-scrollbar-3dlight-color: $light;
-    //-webkit-scrollbar-arrow-color: $white;
-    //-webkit-scrollbar-darkshadow-color: $dark;
-    -webkit-scrollbar-face-color: $foreground-color;
-    //-webkit-scrollbar-highlight-color: $light;
-    //-webkit-scrollbar-shadow-color: $dark;
-    -webkit-scrollbar-track-color: $background-color;
+    -ms-scrollbar-face-color: $foreground-color;
+    -ms-scrollbar-track-color: $background-color;
   }
 
   html {

@@ -1,12 +1,20 @@
 {%- if page.alerts and page.alerts.size > 0 -%}
 {%- assign alerts = site.alerts | where_exp: "item", "page.alerts contains item.path" -%}
 {%- for alert in alerts -%}
+
+{%- comment -%}
+{% if lang and alert.translation_ref and alert.lang != lang %}
+{%- assign alert = site.alerts | where: "translation_ref", alert.translation_ref | where: 'lang', lang | first -%}
+{% endif %}
+{%- endcomment -%}
+{%- include helpers/local-document.html doc=alert -%}
+
 {%- comment -%}
 {%- assign alert_id = alert.path | slugify -%}
 {%- assign alert_content = alert.content | markdownify -%}
 {%- include bootstrap-components/alert.html title=alert.title content=alert_content style=alert.alert.style id=alert_id dismissible=alert.dismissible -%}
 {%- endcomment -%}
-{%- include bootstrap-components/alert.html alert=alert extra_class="mb-3" -%}
+{%- include bootstrap-components/alert.html alert=doc extra_class="mb-3" -%}
 {%- endfor -%}
 {%- endif -%}
 

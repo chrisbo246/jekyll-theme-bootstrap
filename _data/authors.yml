@@ -1,8 +1,11 @@
 chrisbo246:
   type: "Person"
   name: "chrisbo246"
-  bio: >
-    Short author biography.
+  bio:
+    en-US: >
+      Dyslexic GenX with industrial training and headhunter bogey, I kill time testing the latest web technos.
+    fr-FR: >
+      Genération X dyslexique de formation industrielle et épouvantail à chasseur de têtes, je tue le temps en testant les dernières technos Web.
   picture: /assets/images/authors/chrisbo246.png
   image:
     path: /assets/images/authors/chrisbo246.png

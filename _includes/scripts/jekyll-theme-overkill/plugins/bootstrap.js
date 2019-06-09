@@ -1,39 +1,56 @@
 {% raw %}
-(function ($, window, document) {
-  'use strict';
+((($, window, document) => {
 
-
+  /*
   if (typeof $.fn.modal === 'undefined') {
     console.warn('Bootstrap is not loaded!');
     return false;
   }
+  */
 
   /**
   * Convert title attributs into tooltips
   */
 
-  var $tooltips = $('[title]');
-  $tooltips.filter(':not(.btn), :not(attr)').tooltip({
-    'trigger': 'hover focus',
-    'delay': {
-      'show': 3000
-    }
-  });
-  $tooltips.filter('.btn').tooltip({
-    'trigger': 'hover',
-    'delay': {
-      'show': 3000
-    }
-  });
+  if (typeof $.fn.tooltip !== 'undefined') {
+    const $tooltips = $('[title]');
+    $tooltips.filter(':not(.btn), :not(attr)').tooltip({
+      'trigger': 'hover focus',
+      'delay': {
+        'show': 3000
+      }
+    });
+    $tooltips.filter('.btn').tooltip({
+      'trigger': 'hover',
+      'delay': {
+        'show': 3000
+      }
+    });
+  }
 
+
+
+  /**
+  * Change checkbox/radio text according to state
+  */
+  //$tooltips.filter('[data-checked-title]').attr('[data-unchecked-title]', $el.attr('title'))
+  /*$tooltips.filter('[data-checked-title]').on('change', function () {
+  $(':checkbox, :radio').filter('[data-checked-title]').on('change', function () {
+    const $el = $(this);
+    const attr = ($el.is(':checked')) ? 'data-checked-title' : 'data-unchecked-title';
+    $el.tooltip('hide')
+      .attr(attr, $el.)
+      .tooltip('fixTitle')
+      .tooltip('show');
+  });*/
 
 
   /**
   * Load Disqus script only if container is shown
   */
   /*
-  $('#comments').filter('.collapse').one('shown.bs.collapse', function () {
-    var d = document, s = d.createElement('script');
+  $('#comments').filter('.collapse').one('shown.bs.collapse', () => {
+    let d = document, s = d.createElement('script');
     s.src = 'https://{% endraw %}{{ site.disqus.shortname }}{% raw %}.disqus.com/embed.js';
     s.async = true;
     s.setAttribute('data-timestamp', +new Date());
@@ -47,13 +64,17 @@
   * Add/remove .active class to collapse togglers
   */
 
-  var $collapses = $('.collapse').filter('[id]');
-  $collapses.on('shown.bs.collapse', function () {
-    $('.btn').filter('button[data-target="#' + this.id + '"], a[href="#' + this.id + '"]').addClass('active');
-  });
-  $collapses.on('hidden.bs.collapse', function () {
-    $('.btn').filter('button[data-target="#' + this.id + '"], a[href="#' + this.id + '"]').removeClass('active');
-  });
+  if (typeof $.fn.collapse !== 'undefined') {
+    const $collapses = $('.collapse').filter('[id]');
+    $collapses.on('shown.bs.collapse', (event) => {
+      let id = $(event.currentTarget).attr('id');
+      $('.btn').filter(`button[data-target="#${id}"], a[href="#${id}"]`).addClass('active');
+    });
+    $collapses.on('hidden.bs.collapse', (event) => {
+      let id = $(event.currentTarget).attr('id');
+      $('.btn').filter(`button[data-target="#${id}"], a[href="#${id}"]`).removeClass('active');
+    });
+  }
 
 
 
@@ -62,10 +83,10 @@
   */
 
   /*
-  $('a[href*="#"], button[data-toggle][data-target*="#"]').each(function () {
-    var $el = $(this);
+  $('a[href*="#"], button[data-toggle][data-target*="#"]').each((index, element) => {
+    let $el = $(element);
     console.log('toggler', $el.attr('href'), $el.attr('data-target'), $el);
-    var target = $el.attr('href') || $el.attr('data-target');
+    let target = $el.attr('href') || $el.attr('data-target');
     if (!target || !target.match(/^#[0-9a-zA-Z_-]*$/g) || !$(target)) {
       $el.hide();
     }
@@ -77,15 +98,23 @@
   * Assorted alert links
   */
 
-  $('.alert a').addClass('alert-link');
-  $('.alert p').last().addClass('mb-0 d-inline');
+  if (typeof $.fn.alert !== 'undefined') {
+    $('.alert a').addClass('alert-link');
+    $('.alert p').addClass('d-inline').last().addClass('mb-0');
+  }
 
+
+  /**
+  * Update modal if height change
+  */
+
+  if (typeof $.fn.modal !== 'undefined') {
+    $('.modal').modal('handleUpdate')
+  }
 
 
   /**
   * Store / restore with local storage
   */
-
-
-})(window.jQuery, window, document);
+}))(window.jQuery, window, document);
 {% endraw %}

@@ -6,12 +6,15 @@
 # See: https://jekyllrb.com/docs/themes/#overriding-theme-defaults
 #
 layout: home
+#permalink: /
+lang: en-US
+translation_ref: index.md
 
 features:
   card: true
   flipcard: true
   lunr: true
-  post_list: true
+  document_list: true
   social_icons: true
 
 body:
@@ -21,16 +24,16 @@ top_navbar:
   modules: ['modules/navbar/navbar-brand.html']
   #position: ''
 
-bottom_navbar:
-  modules: [modules/nav/comments-toggler.html, modules/nav/tip-link.html, modules/social-icons.html, modules/nav/feed-link.html, modules/nav/settings-toggler.html, modules/nav/back-to-top-link.html]
+#action_nav:
+#  modules: [modules/bottom_navbar/comments-toggler.html, modules/navbar/navbar-secondary-nav.html, modules/bottom_navbar/tip-link.html, modules/navbar/navbar-social-icons.html, modules/bottom_navbar/settings-toggler.html, modules/nav/language-switcher.html]
   #class: 'navbar navbar-light bg-light d-flex flex-row justify-content-between w-100 animated fadeInUp'
   #position: 'fixed-bottom'
 
 sidebar:
   modules: ['modules/sidebar/vertical-primary-nav.html']
 
-post_preview:
-  module: 'modules/post-list/post-list-group.html'
+document_list:
+  module: 'modules/document-list/document-list-group.html'
 
 jumbotron:
   title: 'Hello, world!'
@@ -43,4 +46,11 @@ jumbotron:
     href: '#next'
     icon:
       class: 'fas fa-chevron-right fa-lg mr-1'
+
+nav_item:
+  group: "primary-nav"
+  position: 1
+  label: "Home"
+  icon:
+    class: 'fa-home'
 ---

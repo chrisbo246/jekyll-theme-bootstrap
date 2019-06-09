@@ -1,4 +1,5 @@
-{%- include helpers/related-posts.html limit=15 -%}
+{%- include helpers/related-documents.html limit=15 -%}
+{%- assign posts = return -%}
 {%- if posts.size > 0 -%}
 <div class="btn-group ml-2">
   <button type="button" class="navbar-toggler" id="related_posts-dropdown" data-toggle="dropdown" title="{{ t.continue }}" aria-haspopup="true" aria-expanded="false" aria-label="{{ t.continue }}">

@@ -1,7 +1,7 @@
 {% raw %}
-(function ($) {
+(($ => {
 
-  var settings = $.extend({
+  const defaults = {
     container: 'body',
     playerAttributes: {
       class: 'sound-player',
@@ -9,20 +9,24 @@
     },
     // https://freesound.org/search/?q=&f=license%3A%22Creative+Commons+0%22+type%3A%22ogg%22&s=duration+asc&advanced=0&g=1
     sounds: []
-  }, window.soundPlayerConfig);
+  };
 
-  $(function() {
+  const settings = Object.assign({}, defaults, window.soundPlayerConfig);
 
-    var playerAttributes = [];
-    $.each(settings.playerAttributes, function (key, value) {
-      playerAttributes.push(key + '="' + value + '"');
+  $(() => {
+    let playerAttributes = [];
+    $.each(settings.playerAttributes, (key, value) => {
+      playerAttributes.push(`${key}="${value}"`);
     });
     playerAttributes = playerAttributes.join(' ');
 
-    var $player, player = [], promise = [], html = '';
-    $.each(settings.sounds, function (i, sound) {
-      html = html + '<audio id="' + sound.playerId + '" ' + playerAttributes + ' hidden><source src="' + sound.filePath + '" /></audio>';
-      $(settings.container).on(sound.togglerEvent, sound.togglerSelector, function () {
+    let $player;
+    const player = [];
+    const promise = [];
+    let html = '';
+    $.each(settings.sounds, (i, sound) => {
+      html = `${html}<audio id="${sound.playerId}" ${playerAttributes} hidden><source src="${sound.filePath}" /></audio>`;
+      $(settings.container).on(sound.togglerEvent, sound.togglerSelector, () => {
         //player[i] = $('#' + sound.playerId)[0];
         player[i] = document.getElementById(sound.playerId);
         if (player[i]) {
@@ -42,8 +46,7 @@
       });
     });
     $('body').prepend(html);
-
   });
 
-})(jQuery);
+}))(jQuery);
 {% endraw %}

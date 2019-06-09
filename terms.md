@@ -1,10 +1,10 @@
 ---
-layout: post-list
+layout: document-list
 title: "Terms list"
-permalink: /terms/
-related:
-  collection: terms
-categories: ["list"]
+#permalink: /terms/
+lang: en-US
+translation_ref: terms.md
+categories: [list]
 filters:
   keys: [categories, tags]
 description:
@@ -18,18 +18,19 @@ features:
   filters: true
   lunr: true
   select2: true
-  post_list: true
+  document_list: true
   progress: true
 
 sidebar:
   modules: ['modules/sidebar/filters.html']
 
-post_preview:
-  module: modules/post-list/post-list-flipcard.html
+document_list:
+  collection: terms
+  module: modules/document-list/document-list-flipcard.html
 
 nav_item:
   group: "primary-nav"
-  position: 3
+  position: 4
   label: "Terms"
   icon:
     class:

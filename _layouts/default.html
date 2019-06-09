@@ -3,7 +3,7 @@
 ---
 
 {%- assign lang = page.lang | default: site.lang | default: "en-US" | replace: '_', '-' -%}
-{%- assign lang_base = lang | split: '-' | first -%}
+{%- assign lang_base = lang | split: '-' | first  | downcase -%}
 {%- assign t = site.data.locales[lang] | default: site.data.locales['en-US'] -%}
 
 {%- comment -%}
@@ -25,37 +25,44 @@
 
     {%- include modules/page/header.html -%}
 
-    <span id="top"></span>
-
-    <div class="container-fluid animated fadeInRight py-3">
+    <main class="container-fluid animated fadeInRight py-3">
       <div class="row clearfix">
 
         {%- if page.sidebar.modules and page.sidebar.modules.size > 0 -%}
         <div id="sidebar" class="col collapse {{ page.sidebar.extra_class | default: 'col-sm-4 col-md-4 col-lg-3 col-xl-2 order-2 pl-0' }}">
-          <aside class="sticky-top">
+          <div class="sticky-top">
             {%- for path in page.sidebar.modules -%}
             {%- include {{ path }} class="mb-1" -%}
             {%- endfor -%}
-          </aside>
+          </div>
         </div>
         {%- endif -%}
 
         <div class="col">
+          <span id="top"></span>
+
           {{ content }}
+
           {%- comment -%}<small>environment:{{ jekyll.environment }} defaults:{{ page.defaults }} features:{{ page.features | inspect }}</small>{%- endcomment -%}
+          {%- comment -%}
+          ||id:{{page.id}}
+          ||path:{{page.path}}
+          ||pages:{{ site.pages | where_exp: 'item', 'item.layout != nil' | map: 'path' | join: ', ' }}
+          ||docs:{{ site.documents | map: 'path' | join: ', ' }}
+          | category:{{page.category | jsonify}} | categories:{{page.categories | jsonify}}
+          {%- endcomment -%}
 
         </div>
 
       </div>
-    </div>
-
-    {%- comment -%}{%- include comments.html -%}{%- endcomment -%}
+    </main>
 
     {%- include modules/page/footer.html -%}
 
   </div>
 
-  {%- include modules/page/settings-modal.html -%}
+  {%- include modules/modals/nav-modal.html -%}
+  {%- include modules/modals/settings-modal.html -%}
 
   {%- if criticalcss.size > 0 -%}
   {%- include partials/styles.html -%}

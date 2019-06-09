@@ -1,18 +1,13 @@
 ---
-layout: post-list
+layout: document-list
 title: "Tips"
-permalink: /tips/
-related:
-  collection: tips
+#permalink: /tips/
+lang: en-US
+translation_ref: tips.md
+category: test
+categories:
 filters:
   keys: [categories, tags]
-
-#nav_item:
-#  group: "primary-nav"
-#  position: 9
-#  label: "Tips"
-#  icon:
-#    class:
 
 features:
   card: true
@@ -20,15 +15,25 @@ features:
   filters: true
   lunr: true
   select2: true
-  disqus: true
-  post_list: true
+  comments: true
+  document_list: true
 
-bottom_navbar:
-  modules: [modules/nav/comments-toggler.html, modules/nav/back-to-top-link.html]
+#bottom_navbar:
+#  modules: [modules/bottom_navbar/comments-toggler.html]
+  #modules: [modules/bottom_navbar/comments-toggler.html, modules/nav/language-switcher.html]
 
 sidebar:
   modules: ['modules/sidebar/filters.html']
 
-post_preview:
-  module: modules/post-list/post-list-accordion.html
+document_list:
+  collection: tips
+  module: modules/document-list/document-list-accordion.html
+
+nav_item:
+  group: "secondary-nav"
+  position: 6
+  label: "Tips"
+  icon:
+    class: fas fa-question fa-lg fa-fw
+
 ---

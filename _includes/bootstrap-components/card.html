@@ -95,7 +95,7 @@
 {%- if subtitle == title -%}
 {%- assign subtitle = nil -%}
 {%- endif -%}
-{%- assign text = include.text | default: post.excerpt -%}
+{%- assign text = include.text | default: post.description | default: post.excerpt -%}
 
 {%- assign card_title_classes = 'card-title' | split: ' ' -%}
 {%- if include.title_class -%}
@@ -109,6 +109,11 @@
 {%- assign btn_style = btn_style | append: '-dark' -%}
 {%- assign progress_style = 'bg-dark' -%}
 {%- endif -%}
+
+{%- assign card_footer_classes = 'card-footer' | split: ' ' -%}
+{%- unless config.image.position == 'top' or config.image.position == 'bottom' -%}
+{%- assign card_footer_classes = card_footer_classes | push: 'navbar-dark' -%}
+{%- endunless -%}
 
 {%- assign link_type = include.link_type | default: config.link_type -%}
 {%- if link_type == 'button' -%}
@@ -182,7 +187,7 @@
 
 
   {%- if config.date_display or config.categories_display or config.tags_display or config.link_container != 'body' or include.face == 'front' or include.face == 'back' -%}
-  <div class="card-footer">
+  <div class="{{ card_footer_classes | uniq | compact | join: ' ' }}">
 
     <div class="d-flex justify-content-between align-items-center">
 
@@ -197,7 +202,7 @@
       </button>
       {%- endif -%}
 
-      {%- if config.date_display and include.face != 'front' -%}<small class="font-weight-light float-right">{{ post.date | date: "%b %-d, %Y" }}</small>{%- endif -%}
+      {%- if post.date and config.date_display and include.face != 'front' -%}<small class="font-weight-light float-right">{{ post.date | date: "%b %-d, %Y" }}</small>{%- endif -%}
       {%- if config.new and days_since <= config.new and include.face != 'back' -%}<small class="font-weight-light float-right">{%- if days_since == 1 -%}{{ days_since | format: t.last_modified_1_day_ago }}{%- else -%}{{ days_since | format: t.last_modified_d_days_ago }}{%- endif -%}</small>{%- endif -%}
 
       {%- if link_classes and config.link_container != 'body' -%}
@@ -207,6 +212,8 @@
         {%- endif -%}
       </a>
       {%- endif -%}
+
+      {%- include modules/filters/user-selection-checkbox.html -%}
 
     </div>
 

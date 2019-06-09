@@ -1,10 +1,10 @@
 ---
-layout: post-list
+layout: document-list
 title: "Authors"
-permalink: /authors/
-related:
-  collection: "authors"
-categories: ["list"]
+#permalink: /authors/
+lang: en-US
+translation_ref: authors.md
+categories:
 image: "assets/images/pages/default.png"
 
 features:
@@ -13,17 +13,18 @@ features:
   filters: true
   lunr: true
   select2: true
-  post_list: true
+  document_list: true
 
 sidebar:
   modules: ['modules/sidebar/filters.html']
 
-post_preview:
-  module: modules/post-list/post-list-flipcard.html
+document_list:
+  collection: authors
+  module: modules/document-list/document-list-flipcard.html
 
 #nav_item:
-#  group: "primary-nav"
-#  position: 8
+#  group: "secondary-nav"
+#  position: 3
 #  label: "Authors"
 #  icon:
 #    class:

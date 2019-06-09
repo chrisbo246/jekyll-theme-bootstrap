@@ -1,5 +1,7 @@
 
-<button class="{{ include.class }}" {% if include.text_class contains 'text-hide' %}title="{{ include.text }}"{% endif %} role="button" aria-label="{{ include.text }}" data-toggle="{{ include.toggle }}" data-target="{{ include.target }}" aria-controls="{{ include.target }}" aria-expanded="false" aria-label="{{ include.text }}">
+{%- assign element = include.element | default: 'button' -%}
+
+<{{ element }} class="{{ include.class }}" {% if include.text_class contains 'text-hide' %}title="{{ include.text }}"{% endif %} {% if element == 'a' %}href="{{ include.target }}" role="button"{% else %}data-target="{{ include.target }}"{% endif %} aria-label="{{ include.text }}" data-toggle="{{ include.toggle }}" aria-controls="{{ include.target }}" aria-expanded="false" aria-label="{{ include.text }}">
 
   {%- if include.icon_class -%}
   <i class="{{ include.icon_class }}" aria-hidden="true"></i>
@@ -13,4 +15,4 @@
   <sup {% if include.badge_class %}class="{{ include.badge_class }}"{% endif %} {{ include.badge_attributes }}>{{ include.badge_text }}</sup>
   {%- endif -%}
 
-</button>
+</{{ element }}>

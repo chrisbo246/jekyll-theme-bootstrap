@@ -52,6 +52,6 @@ node_modules/select2-bootstrap4-theme/*
 !node_modules/lunr/*.js
 !node_modules/lunr-languages/min
 !node_modules/popper.js/dist/umd/*.min.js
-!node_modules/select2/dist/css/*.min.css
 !node_modules/select2/dist/js/*.min.js
+!node_modules/select2/src/scss/*
 !node_modules/select2-bootstrap4-theme/src

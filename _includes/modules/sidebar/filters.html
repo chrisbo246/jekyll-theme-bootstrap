@@ -1,5 +1,5 @@
 {%- if page.filters.modules.size > 0 -%}
-<form -data-persist="garlic">
+<form>
 
   {% if config.direction == 'vertical' %}
   {%- assign class = '' -%}
@@ -11,6 +11,7 @@
   {%- include {{ path }} class=class -%}
   {%- endfor -%}
 
+  {%- comment -%}
   <div class="btn-group btn-group-justified" role="group" aria-label="">
     <div class="btn-group" role="group">
       <button type="submit" class="btn btn-primary"><span class="fas fa-filter fa-lg fa-fw"></span>{{ t.filter }}</button>
@@ -19,6 +20,7 @@
       <button type="button" class="btn btn-primary filter-reset"><span class="fas fa-undo fa-lg fa-fw"></span>{{ t.reset }}</button>
     </div>
   </div>
+  {%- endcomment -%}
 
 </form>
 {%- endif -%}

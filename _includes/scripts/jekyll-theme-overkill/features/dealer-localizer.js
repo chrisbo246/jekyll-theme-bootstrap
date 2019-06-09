@@ -1,39 +1,35 @@
 {% raw %}
-var dealerLocalizerModule = (function () {
-    'use strict';
-
-    var baseurl = window.baseurl;
-    var dealersData;
-    var shopsData;
-    var countriesData;
-    var ready;
+const dealerLocalizerModule = ((() => {
+    const baseurl = window.baseurl;
+    let dealersData;
+    let shopsData;
+    let countriesData;
+    let ready;
 
 
-    var addURIParams = function ($link, newParams) {
+    const addURIParams = ($link, newParams) => {
 
        // Get URL parts
-       var origin = $link.prop('origin');
-       var pathname = $link.prop('pathname');
-       var search = $link.prop('search');
-       var hash = $link.prop('hash');
+       const origin = $link.prop('origin');
+       const pathname = $link.prop('pathname');
+       const search = $link.prop('search');
+       const hash = $link.prop('hash');
 
        // Parse URL params
-       var params = $link.prop('search')
+       const params = $link.prop('search')
        .replace(/^\?/, '')
        .split('&')
-       .reduce(function (params, param) {
-          var pair = param.split('=').map(function (value) {
-             return decodeURIComponent(value.replace('+', ' '));
-          });
+       .reduce((params, param) => {
+          const pair = param.split('=').map(value => decodeURIComponent(value.replace('+', ' ')));
           params[pair[0]] = pair[1];
           return params;
        }, {});
 
        // Merge actual and new params
-       var params = $.extend(params, newParams);
+       Object.assign(params, newParams);
 
        // Combine URL components
-       var url = origin + pathname + $.param(params) + hash;
+       const url = origin + pathname + $.param(params) + hash;
 
        // Update link href
        $link.attr('href', url);
@@ -45,7 +41,7 @@ var dealerLocalizerModule = (function () {
 
 
 
-    var saveLink = function ($link) {
+    const saveLink = $link => {
 
         if (!$link.data('default-href') || !$link.data('default-html')) {
             $link.attr('data-default-href', $link.attr('href'));
@@ -56,7 +52,7 @@ var dealerLocalizerModule = (function () {
 
 
 
-    var restoreLink = function ($link) {
+    const restoreLink = $link => {
 
         $link.attr('href', $link.data('default-href'));
         $link.html($link.data('default-html'));
@@ -65,7 +61,7 @@ var dealerLocalizerModule = (function () {
 
 
 
-    var updateLink = function ($link, href, html) {
+    const updateLink = ($link, href, html) => {
 
         $link.attr('href', href);
         $link.html(html);
@@ -75,17 +71,17 @@ var dealerLocalizerModule = (function () {
 
 
     // Check if the dealer have several websites
-    var getDealerData = function ($link) {
+    const getDealerData = $link => {
 
-        var dealerData;
+        let dealerData;
 
-        $.each(dealersData, function (key, data) {
+        for (const data of dealersData) {
             if ($link.prop('href').match(new RegExp(data.pattern, 'g'))) {
                 console.log('Dealer link found', $link.prop('href'), data);
                 dealerData = data;
                 return false;
             }
-        });
+        }
 
         return dealerData;
 
@@ -93,7 +89,7 @@ var dealerLocalizerModule = (function () {
 
 
 
-    var getDealerLinks = function ($link, countryCode) {
+    const getDealerLinks = ($link, countryCode) => {
 
     };
 
@@ -102,25 +98,27 @@ var dealerLocalizerModule = (function () {
     /**
      * Generate link attributs for each local shop
      */
-    var getDealerLinks = function ($link, countryCode) {
+    const getDealerLinks = ($link, countryCode) => {
 
-        var list = {};
-        var tld = $link.prop('hostname').match(/(\.[a-z]{2,3})?(\.[a-z]{2,3})$/g);
+        const list = {};
+        const tld = $link.prop('hostname').match(/(\.[a-z]{2,3})?(\.[a-z]{2,3})$/g);
 
         // Check if the dealer have some local shops
         // and return the patterns allowing to find links
-        var dealerData = getDealerData($link);
+        const dealerData = getDealerData($link);
         if (dealerData) {
 
+
             // Get regex patterns for each local shops
-            $.each(shopsData, function (host, shopData) {
+            $.each(shopsData, (host, shopData) => {
+                let url;
 
                 if (host.match(new RegExp(dealerData.hostSearchPattern, 'g'))) {
                     if (!countryCode || (shopData && (!shopData.countries || $.inArray(countryCode, shopData.countries) !== -1))) {
 
                         // Create a local URL using the given pattern
-                        var url = $link.prop('href').replace(new RegExp($link.prop('hostname'), 'g'), host);
-                        var url = url.replace(new RegExp(dealerData.urlSearchPattern, 'g'), dealerData.urlReplacePattern);
+                        url = $link.prop('href').replace(new RegExp($link.prop('hostname'), 'g'), host);
+                        url = url.replace(new RegExp(dealerData.urlSearchPattern, 'g'), dealerData.urlReplacePattern);
 
                         // Add affiliation parameters to query string
                         if (shopData.params) {
@@ -152,16 +150,16 @@ var dealerLocalizerModule = (function () {
     /**
      * Update dealer links with the local shop URL
      */
-    var localize = function (linksSelector, countryCode) {
-
-        var $link, list;
+    const localize = (linksSelector, countryCode) => {
+        let $link;
+        let list;
 
         //  Once required data has been loaded
-        $.when(ready).done(function () {
+        $.when(ready).done(() => {
 
-            $(linksSelector).each(function () {
+            $(linksSelector).each((index, element) => {
 
-                $link = $(this);
+                $link = $(element);
 
                 // First save the link href and text in a data attribut
                 saveLink($link);
@@ -169,9 +167,9 @@ var dealerLocalizerModule = (function () {
                 // Create a dataset for each local shop
                 list = getDealerLinks($link, countryCode);
                 if (list) {
-                    $.each(list, function (host, data) {
+                    for (const data of list) {
                         updateLink($link, data.href, data.html);
-                    });
+                    }
                 } else {
                     restoreLink($link);
                 }
@@ -179,7 +177,6 @@ var dealerLocalizerModule = (function () {
             });
 
         });
-
     };
 
 
@@ -187,24 +184,20 @@ var dealerLocalizerModule = (function () {
     /**
     * Load JSON data
     */
-    var loadData = function () {
-
-        return $.when(
-            $.getJSON(baseurl + '/assets/json/dealers.json', function (json) {
-                dealersData = json;
-                console.log('Loaded', 'dealers.json');
-            }),
-            $.getJSON(baseurl + '/assets/json/shops.json', function (json) {
-                shopsData = json;
-                console.log('Loaded', 'shops.json');
-            })/*,
-            $.getJSON(baseurl + '/assets/json/countries.json', function (json) {
-                countriesData = json;
-                console.log('Loaded', 'countries.json');
-            })*/
-        );
-
-    };
+    const loadData = () => $.when(
+        $.getJSON(`${baseurl}/assets/json/dealers.json`, json => {
+            dealersData = json;
+            console.log('Loaded', 'dealers.json');
+        }),
+        $.getJSON(`${baseurl}/assets/json/shops.json`, json => {
+            shopsData = json;
+            console.log('Loaded', 'shops.json');
+        })/*,
+        $.getJSON(baseurl + '/assets/json/countries.json', (json) => {
+            countriesData = json;
+            console.log('Loaded', 'countries.json');
+        })*/
+    );
 
 
 
@@ -214,8 +207,7 @@ var dealerLocalizerModule = (function () {
 
 
     return {
-        localize: localize
+        localize
     }
-
-})();
+}))();
 {% endraw %}

@@ -7,10 +7,10 @@
         <label>{{ t.shuffle }}</label>
         <div class="btn-group btn-group-toggle btn-group-sm w-20 float-right" data-toggle="buttons">
           <label class="btn btn-secondary btn-switch active w-50">
-            <input type="radio" name="randomize" value="0" autocomplete="off" checked data-global="false" />{{ t.switch_off }}
+            <input type="radio" name="randomize" value="0" autocomplete="off" checked data-local-storage-namespace="{{ page.url }}" />{{ t.switch_off }}
           </label>
           <label class="btn btn-primary btn-switch w-50">
-            <input type="radio" name="randomize" value="1" autocomplete="off" data-global="false" />{{ t.switch_on }}
+            <input type="radio" name="randomize" value="1" autocomplete="off" data-local-storage-namespace="{{ page.url }}" />{{ t.switch_on }}
           </label>
         </div>
       </div>

@@ -4,7 +4,7 @@
 * @module
 * @see https://tech.yandex.com/translate/
 */
-var YandexTranslate = (function () {
+var YandexTranslate = (() => {
     /*eslint-enable no-unused-vars*/
     'use strict';
 
@@ -15,9 +15,9 @@ var YandexTranslate = (function () {
     * @return {Object} jQuery promise
     * @see https://tech.yandex.com/translate/doc/dg/reference/translate-docpage/
     */
-    var request = function (params) {
+    var request = (params) => {
 
-        params = $.extend({}, {
+        params = Object.assign({}, {
             key: 'trnsl.1.1.20170126T174835Z.60d9a0f54ac44aef.fc3b4dab14cf7c81caf5fe57769a769ab427a872',
             lang: $('html').attr('lang') || 'en-US', // en | fr-en
             format : 'plain' // plain | html
@@ -43,20 +43,20 @@ var YandexTranslate = (function () {
                 //'Content-Type': 'application/json; charset=UTF-8'
             },
             //timeout: 5000, // Uncaught ReferenceError:
-            success: function (data, textStatus, jqXHR) {
+            success: (data, textStatus, jqXHR) => {
                 console.log('Yandex translate request', 'done');
                 if (data.warnings) {
                     console.warn(data.warnings.main['*']);
                 }
             },
-            error: function (errorMessage) {
+            error: (errorMessage) => {
                 console.warn('Yandex translate request', errorMessage, url + '?' + $.param(params));
             }
         });
 
     };
 
-    $(function() {
+    $(() => {
 
         var params = {
             format: 'html'
@@ -69,7 +69,7 @@ var YandexTranslate = (function () {
         }
         params.format = 'en-fr';
 
-        request(params).done(function (html) {
+        request(params).done((html) => {
             $('body').html(html);
         });
 
